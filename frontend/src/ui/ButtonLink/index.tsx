@@ -4,12 +4,12 @@ import { Link, type LinkProps } from "react-router-dom";
 import { cn } from "../../libs/cn";
 
 const ButtonLinkVariants = cva(
-    "w-full py-1.5 px-3 border rounded-sm",
+    "w-full py-1.5 px-3 rounded-sm",
     {
         variants: {
             variant: {
-                default: "border-black bg-black hover:bg-gray-800 text-white",
-                outline: "border-black text-black",
+                default: "border border-black bg-black hover:bg-gray-800 text-white",
+                outline: "border border-black text-black",
             }
         },
     }

@@ -17,6 +17,7 @@ import './assets/css/index.css'
 import Home from './views/Home'
 import Login from './views/Auth/Login'
 import Register from './views/Auth/Register'
+import Account from './views/Account'
 
 // APP
 createRoot(document.getElementById('root')!).render(
@@ -28,6 +29,7 @@ createRoot(document.getElementById('root')!).render(
                         <Route path="/" element={<Home />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
+                        <Route path="/account" element={<Account />} />
                     </Routes>
                 </Browser>
             </PersistGate>
