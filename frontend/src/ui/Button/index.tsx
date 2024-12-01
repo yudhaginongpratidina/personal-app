@@ -3,11 +3,12 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "../../libs/cn";
 
 const ButtonVariants = cva(
-    "w-full p-2.5 border rounded-sm",
+    "w-full py-2.5 px-3 border rounded-sm",
     {
         variants: {
             variant: {
                 default: "border-black bg-black hover:bg-gray-800 text-white",
+                outline: "border-black text-black",
             }
         },
     }
