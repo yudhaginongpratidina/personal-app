@@ -19,6 +19,11 @@ import Login from './views/Auth/Login'
 import Register from './views/Auth/Register'
 import Account from './views/Account'
 
+import Project from './views/Project'
+import CreateProject from './views/Project/Create'
+import EditProject from './views/Project/Edit'
+import DeleteProject from './views/Project/Delete'
+
 // APP
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
@@ -30,6 +35,10 @@ createRoot(document.getElementById('root')!).render(
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
                         <Route path="/account" element={<Account />} />
+                        <Route path="/projects" element={<Project />} />
+                        <Route path="/project/create" element={<CreateProject />} />
+                        <Route path="/project/edit/:id" element={<EditProject />} />
+                        <Route path="/project/delete/:id" element={<DeleteProject />} />
                     </Routes>
                 </Browser>
             </PersistGate>
