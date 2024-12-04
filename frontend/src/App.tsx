@@ -10,6 +10,8 @@ import { BrowserRouter as Browser, Routes, Route } from 'react-router-dom'
 
 import './assets/css/index.css'
 
+import PortfolioView from './modules/portfolio/views/portfolio.view'
+
 import LoginView from './modules/auth/views/login.view'
 import RegisterView from './modules/auth/views/register.view'
 
@@ -19,6 +21,7 @@ createRoot(document.getElementById('root')!).render(
             <PersistGate loading={null} persistor={persistor} >
                 <Browser>
                     <Routes>
+                        <Route path="/" element={<PortfolioView />} />
                         <Route path="/login" element={<LoginView />} />
                         <Route path="/register" element={<RegisterView />} />
                     </Routes>
