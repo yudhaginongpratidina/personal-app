@@ -9,6 +9,7 @@ import { Provider } from 'react-redux'
 
 import LoginView from '@/modules/auth/views/login.view'
 import RegisterView from '@/modules/auth/views/register.view'
+import ForgetPasswordView from './modules/auth/views/forget_password.view'
 
 import TablePortfolioView from './modules/portfolio/views/table_portfolio.view'
 import CreatePortfolioView from '@/modules/portfolio/views/create_portfolio.view'
@@ -25,6 +26,7 @@ createRoot(document.getElementById('root')!).render(
                     <Routes>
                         <Route path="/login" element={<LoginView />} />
                         <Route path="/register" element={<RegisterView />} />
+                        <Route path="/forget-password" element={<ForgetPasswordView />} />
  
                         <Route path='/dashboard/portfolio' element={<TablePortfolioView />} />
                         <Route path='/dashboard/portfolio/create' element={<CreatePortfolioView />} />
