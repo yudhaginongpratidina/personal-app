@@ -10,8 +10,12 @@ import { Provider } from 'react-redux'
 import LoginView from '@/modules/auth/views/login.view'
 import RegisterView from '@/modules/auth/views/register.view'
 
-import DashboardPortfolioView from '@/modules/portfolio/views/dashboard_portfolio.view'
+import TablePortfolioView from './modules/portfolio/views/table_portfolio.view'
 import CreatePortfolioView from '@/modules/portfolio/views/create_portfolio.view'
+import EditPortfolioView from '@/modules/portfolio/views/edit_portfolio.view'
+
+import NotFoundView from './modules/errors/views/not_found.view'
+import MaintenanceView from './modules/errors/views/maintenance.view'
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
@@ -22,8 +26,12 @@ createRoot(document.getElementById('root')!).render(
                         <Route path="/login" element={<LoginView />} />
                         <Route path="/register" element={<RegisterView />} />
  
-                        <Route path='/dashboard/portfolio/' element={<DashboardPortfolioView />} />
+                        <Route path='/dashboard/portfolio' element={<TablePortfolioView />} />
                         <Route path='/dashboard/portfolio/create' element={<CreatePortfolioView />} />
+                        <Route path='/dashboard/portfolio/edit' element={<EditPortfolioView />} />
+
+                        <Route path="/maintenance" element={<MaintenanceView />} />
+                        <Route path="*" element={<NotFoundView />} />
                     </Routes>
                 </Browser>
             </PersistGate>

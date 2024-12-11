@@ -1,12 +1,10 @@
-import DashboardPortfolioLayout from "@/modules/portfolio/layouts/dashboard_portfolio.layout"
-import CreatePortfolioForm from "@/modules/portfolio/components/create_portfolio.form"
+import FormLayout from "@/core/layouts/form.layout"
+import FormCreatePortfolio from "../components/form.create.portolio"
 
 export default function CreatePortfolioView() {
     return (
-        <DashboardPortfolioLayout>
-            <div className="w-full p-2.5">
-                <CreatePortfolioForm />
-            </div>
-        </DashboardPortfolioLayout>
+        <FormLayout title={"Portfolio"} description={"Please fill in the form to create a new portfolio"}>
+            <FormCreatePortfolio />
+        </FormLayout>
     )
 }

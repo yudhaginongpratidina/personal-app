@@ -1,7 +1,7 @@
-import AuthForm from "./auth.form"
-import AuthInput from "./auth.input"
-import AuthButton from "./auth.button"
-import AuthAlert from "./auth.alert";
+import { Form, FormHeader, FormTitle, FormDescription, FormBody, FormFooter, FormLinkAlternative } from "@/core/ui/Form";
+import Alert from "@/core/ui/Alert";
+import Input from "@/core/ui/Input";
+import { ButtonAuth } from "@/core/ui/Button";
 
 import { MdEmail, MdPassword } from "react-icons/md";
 
@@ -10,13 +10,12 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginFormSchema, LoginFormSchema } from "@/modules/auth/validators/login.validator";
 
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useAppDispatch } from "@/store/hooks";
 import { loginSuccess } from "@/store/slices/credential.slice";
 
 export default function LoginForm() {
 
     const dispatch = useAppDispatch()
-    const { isAuthenticated } = useAppSelector(state => state.credentials)
 
     const [isError, setIsError] = useState<boolean>(false)
     const [message, setMessage] = useState<string>("")
@@ -43,26 +42,35 @@ export default function LoginForm() {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <AuthForm>
-                {message && <AuthAlert isError={isError} message={message} />}
-                <AuthInput
-                    icons={<MdEmail className="text-2xl" />}
-                    id="email"
-                    type="email"
-                    placeholder="Enter your email"
-                    error={errors.email?.message}
-                    {...register("email")}
-                />
-                <AuthInput
-                    icons={<MdPassword className="text-2xl" />}
-                    id="password"
-                    type="password"
-                    placeholder="Enter your password"
-                    error={errors.password?.message}
-                    {...register("password")}
-                />
-                <AuthButton type="submit" disabled={isAuthenticated} className={isAuthenticated ? "cursor-not-allowed bg-gray-400 hover:bg-gray-400" : ""}>Login</AuthButton>
-            </AuthForm>
+            <Form>
+                <FormHeader>
+                    <FormTitle>Login</FormTitle>
+                    <FormDescription>Enter your details to login</FormDescription>
+                </FormHeader>
+                <FormBody>
+                    {message && <Alert isError={isError} message={message} />}
+                    <Input
+                        icons={<MdEmail className="text-xl" />}
+                        id="email"
+                        type="email"
+                        placeholder="Enter your email"
+                        error={errors.email?.message}
+                        {...register("email")}
+                    />
+                    <Input 
+                        icons={<MdPassword className="text-xl" />}
+                        id={"password"}
+                        type={"password"} 
+                        placeholder={"Enter your password"}
+                        error={errors.password?.message}
+                        {...register("password")}
+                    />
+                    <ButtonAuth>Login</ButtonAuth>
+                </FormBody>
+                <FormFooter>
+                    <FormLinkAlternative href="/register">I don't have an account</FormLinkAlternative>
+                </FormFooter>
+            </Form>
         </form>
     )
 }
