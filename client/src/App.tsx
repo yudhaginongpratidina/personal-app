@@ -11,6 +11,9 @@ import LoginView from '@/modules/auth/views/login.view'
 import RegisterView from '@/modules/auth/views/register.view'
 import ForgetPasswordView from './modules/auth/views/forget_password.view'
 
+import ProfileView from './modules/profile/views/profile.view'
+import EditProfileView from './modules/profile/views/edit_profile.view'
+
 import TablePortfolioView from './modules/portfolio/views/table_portfolio.view'
 import CreatePortfolioView from '@/modules/portfolio/views/create_portfolio.view'
 import EditPortfolioView from '@/modules/portfolio/views/edit_portfolio.view'
@@ -28,6 +31,9 @@ createRoot(document.getElementById('root')!).render(
                         <Route path="/register" element={<RegisterView />} />
                         <Route path="/forget-password" element={<ForgetPasswordView />} />
  
+                        <Route path='/profile' element={<ProfileView />} />
+                        <Route path='/profile/edit' element={<EditProfileView />} />
+
                         <Route path='/dashboard/portfolio' element={<TablePortfolioView />} />
                         <Route path='/dashboard/portfolio/create' element={<CreatePortfolioView />} />
                         <Route path='/dashboard/portfolio/edit' element={<EditPortfolioView />} />
