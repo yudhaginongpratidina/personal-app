@@ -1,15 +1,11 @@
 import { z } from "zod";
 
-export const userFormSchema = z.object({
-    fullName: z
+export const createUserFormSchema = z.object({
+    username: z
         .string()
-        .min(1, "Full name is required")
-        .min(4, "Full name must be at least 4 characters")
-        .max(50, "Full name must be less than 50 characters"),
-    email: z
-        .string()
-        .min(1, "Email is required")
-        .email("Invalid email"),
+        .min(1, "Username is required")
+        .min(6, "Username must be at least 6 characters")
+        .max(50, "Username must be less than 50 characters"),
     password: z
         .string()
         .min(1, "Password is required")
@@ -22,4 +18,14 @@ export const userFormSchema = z.object({
         .max(16, "Password must be less than 16 characters"),
 }).refine((data) => data.password === data.confirmPassword, { message: "Passwords do not match", path: ["confirmPassword"] })
 
-export type UserFormSchema = z.infer<typeof userFormSchema>
+export type CreateUserFormSchema = z.infer<typeof createUserFormSchema>
+
+export const updateUserFormSchema = z.object({
+    username: z
+        .string()
+        .min(1, "Username is required")
+        .min(6, "Username must be at least 6 characters")
+        .max(50, "Username must be less than 50 characters"),
+})
+
+export type UpdateUserFormSchema = z.infer<typeof updateUserFormSchema>

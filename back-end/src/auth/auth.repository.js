@@ -1,9 +1,9 @@
 import {db} from "../../config/database/prisma.database.js";
 
-export const count_email = async (email) => {
+export const count_username = async (username) => {
     const response = await db.user.count({
         where: {
-            email : email
+            username : username
         }
     })
 
@@ -13,8 +13,7 @@ export const count_email = async (email) => {
 export const create_user = async (data) => {
     const response = await db.user.create({
         data : {
-            full_name : data.full_name,
-            email : data.email,
+            username : data.username,
             password : data.password,
             terms_and_conditions : data.terms_and_conditions
         }
@@ -23,10 +22,10 @@ export const create_user = async (data) => {
     return response
 }
 
-export const find_user_by_email = async (email) => {
+export const find_user_by_username = async (username) => {
     const response = await db.user.findUnique({
         where : {
-            email : email
+            username : username
         }
     })
 

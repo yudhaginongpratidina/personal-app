@@ -1,11 +1,13 @@
 import express from "express";
 import logger from "./config/logger/index.js";
+import cors from "cors";
 
 import AuthController from "./src/auth/auth.controller.js";
 import UserController from "./src/user/user.controller.js";
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

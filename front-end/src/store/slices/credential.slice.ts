@@ -2,8 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface Credentials {
     id: string | number
-    fullName: string
-    email: string
+    username: string
     role: string
 }
 

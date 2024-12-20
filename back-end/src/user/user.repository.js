@@ -15,10 +15,10 @@ export const delete_user_by_id = async (id) => {
     return response
 }
 
-export const count_email = async (email) => {
+export const count_username = async (username) => {
     const response = await db.user.count({
         where: {
-            email : email
+            username : username
         }
     })
 
@@ -28,12 +28,29 @@ export const count_email = async (email) => {
 export const create_user = async (data) => {
     const response = await db.user.create({
         data : {
-            full_name : data.full_name,
-            email : data.email,
+            username : data.username,
             password : data.password,
             terms_and_conditions : data.terms_and_conditions
         }
     })
 
+    return response
+}
+
+export const update_user_by_id = async (id, data) => {
+    const response = await db.user.update({
+        where : {
+            id : id
+        },
+        data : {
+            username : data.username,
+        }
+    })
+
+    return response
+}
+
+export const delete_many_user_by_id = async (ids) => {
+    const response = await db.user.deleteMany({where : {id : {in : ids}}})
     return response
 }

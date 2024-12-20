@@ -1,15 +1,11 @@
 import { z } from "zod";
 
 export const registerFormSchema = z.object({
-    fullName: z
+    username: z
         .string()
-        .min(1, "Full name is required")
-        .min(4, "Full name must be at least 4 characters")
-        .max(50, "Full name must be less than 50 characters"),
-    email: z
-        .string()
-        .min(1, "Email is required")
-        .email("Invalid email"),
+        .min(1, "Username is required")
+        .min(4, "Username must be at least 4 characters")
+        .max(50, "Username must be less than 50 characters"),
     password: z
         .string()
         .min(1, "Password is required")

@@ -1,4 +1,4 @@
-import { get_all_user, get_user_by_id, delete_user_by_id, create_user, count_email } from "./user.repository.js"
+import { get_all_user, get_user_by_id, delete_user_by_id, create_user, count_username, update_user_by_id, delete_many_user_by_id } from "./user.repository.js"
 import ResponseError from "../../helper/response_error.helper.js"
 import bcrypt from "bcrypt"
 
@@ -29,23 +29,53 @@ export const DELETE_USER_BY_ID = async (id) => {
 }
 
 export const CREATE_USER = async (data) => {
-    const { full_name, email, password, terms_and_conditions } = data;
+    const { username, password, terms_and_conditions } = data;
 
-    const email_exist = await count_email(email)
+    const username_exist = await count_username(username)
 
-    if ( email_exist === 1 ) {
-        throw new ResponseError(400, "email already exist");
+    if ( username_exist === 1 ) {
+        throw new ResponseError(400, "username already exist");
     }
 
     const salt = await bcrypt.genSalt(10);
     const hash_password = await bcrypt.hash(password, salt);
 
     const response = await create_user({ 
-        full_name : full_name, 
-        email : email,
+        username : username,
         password: hash_password,
         terms_and_conditions : terms_and_conditions
     })
 
+    return response
+}
+
+export const UPDATE_USER_BY_ID = async (id, data) => {
+    const id_exist = await get_user_by_id(id)
+
+    if (!id_exist) {
+        throw new ResponseError(400, "user not found")
+    }
+
+    if (data.username === id_exist.username) {
+        throw new ResponseError(400, "username has already been used");
+    }
+
+    const response = await update_user_by_id(id, {
+        username : data.username
+    })
+
+    return response
+}
+
+export const DELETE_MANY_USER_BY_ID = async (ids) => {
+    if (Array.isArray(ids) === false) {
+        throw new ResponseError(400, "ids must be an array");
+    }
+
+    if (ids.length === 0) {
+        throw new ResponseError(400, "ids must not be empty");
+    }
+    
+    const response = await delete_many_user_by_id(ids)
     return response
 }

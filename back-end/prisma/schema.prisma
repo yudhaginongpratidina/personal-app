@@ -9,14 +9,12 @@ datasource db {
 
 enum Role {
     USER
-    CONTRIBUTOR
     ADMIN
 }
 
 model User {
     id                   String   @id @default(cuid())
-    full_name            String
-    email                String   @unique
+    username             String   @unique
     password             String
     terms_and_conditions Boolean
     role                 Role     @default(USER)

@@ -1,14 +1,11 @@
 import { z } from "zod";
 
 const registerSchema = z.object({
-    full_name: z
+    username: z
         .string()
-        .min(1, "Full name is required")
-        .max(50, "Full name must be less than 50 characters"),
-    email: z
-        .string()
-        .min(1, "Email is required")
-        .email("Invalid email"),
+        .min(1, "username is required")
+        .min(4, "username must be at least 4 characters")
+        .max(50, "username must be less than 50 characters"),
     password: z
         .string()
         .min(1, "Password is required")
@@ -26,10 +23,11 @@ const registerSchema = z.object({
 
 
 const loginSchema = z.object({
-    email: z
+    username: z
         .string()
-        .min(1, "Email is required")
-        .email("Invalid email"),
+        .min(1, "username is required")
+        .min(4, "username must be at least 4 characters")
+        .max(50, "username must be less than 50 characters"),
     password: z
         .string()
         .min(1, "Password is required")
