@@ -8,14 +8,21 @@ import { store, persistor } from '@/store'
 import { PersistGate } from 'redux-persist/integration/react'
 import { Provider } from 'react-redux'
 
-import LoginView from '@/views/auth/login.view'
-import RegisterView from '@/views/auth/register.view'
+// import DashboardView from '@/views/client/dashboard/index.client'
+// import IndexUserView from '@/views/administrator/users/index.user.view'
+// import CreateUserView from '@/views/administrator/users/create.user.view'
+// import EditUserView from '@/views/administrator/users/edit.user.view'
+// import UpdateRoleUserView from '@/views/administrator/users/update_role.user.view'
 
-import DashboardView from '@/views/dashboard/dashboard.view'
-import IndexUserView from '@/views/dashboard/users/index.user.view'
-import CreateUserView from '@/views/dashboard/users/create.user.view'
-import EditUserView from '@/views/dashboard/users/edit.user.view'
-import UpdateRoleUserView from '@/views/dashboard/users/update_role.user.view'
+// CLIENT
+import LoginClientView from './views/client/auth/login.client.view'
+import RegisterClientView from './views/client/auth/register.client.view'
+import DashboardClientView from './views/client/dashboard/index.client'
+
+// ADMINISTRATOR
+import LoginAdminView from '@/views/administrator/auth/login.admin.view'
+import RegsiterAdminView from './views/administrator/auth/register.admin.view'
+import DashboardAdminView from './views/administrator/dashboard/index.admin.view'
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
@@ -23,13 +30,21 @@ createRoot(document.getElementById('root')!).render(
             <PersistGate loading={null} persistor={persistor} >
                 <Browser>
                     <Routes>
-                        <Route path="/" element={<LoginView />} />
-                        <Route path="/register" element={<RegisterView />} />
-                        <Route path="/dashboard" element={<DashboardView />} />
+                        {/* <Route path="/dashboard" element={<DashboardView />} />
                         <Route path="/dashboard/users" element={<IndexUserView />} />
                         <Route path="/dashboard/users/create" element={<CreateUserView />} />
                         <Route path="/dashboard/users/:id/edit" element={<EditUserView />} />
-                        <Route path='/dashboard/users/:id/update-role' element={<UpdateRoleUserView />} />
+                        <Route path='/dashboard/users/:id/update-role' element={<UpdateRoleUserView />} />  */}
+
+                        {/* CLIENT */}
+                        <Route path='/x0DsZqJHrMIJ8do/login' element={<LoginClientView/>} />
+                        <Route path='/x0DsZqJHrMIJ8do/register' element={<RegisterClientView/>} />
+                        <Route path='/x0DsZqJHrMIJ8do/dashboard' element={<DashboardClientView/>} />
+
+                        {/* ADMINISTRATOR */}
+                        <Route path="/$2a$14$rVguT8OkWGWpUCh7YBizz.wQI7hazbul1kAn8DyQDw23G5Yp6Eytq" element={<LoginAdminView />} />
+                        <Route path="/$2a$14$PhEQORJUtC1yPod3hcnWNOjBYobhufLqnqnJVKcUU43SbkL0d0Tm2" element={<RegsiterAdminView />} />
+                        <Route path="/6Bgv0npTToaFgSeNsuuqvBcZrGLLGGmamppI8r" element={<DashboardAdminView />} />
                     </Routes>
                 </Browser>
             </PersistGate>
