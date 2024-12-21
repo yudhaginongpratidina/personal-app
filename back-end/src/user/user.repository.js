@@ -50,7 +50,14 @@ export const update_user_by_id = async (id, data) => {
     return response
 }
 
+export const update_role_by_id = async (id, role) => {
+    const response = await db.user.update({where : {id : id}, data : {role : role}})
+    return response
+}
+
+
 export const delete_many_user_by_id = async (ids) => {
     const response = await db.user.deleteMany({where : {id : {in : ids}}})
     return response
 }
+

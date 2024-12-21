@@ -39,6 +39,11 @@ export const Columns_User: ColumnDef<TypeDataUser>[] = [
         size: 160
     },
     {
+        accessorKey: "role",
+        header: "Role",
+        size: 100
+    },
+    {
         accessorKey: "action",
         header: () => (
             <div className="flex items-center justify-center">
@@ -48,6 +53,8 @@ export const Columns_User: ColumnDef<TypeDataUser>[] = [
         cell: ({ row }) => (
             <div className="flex items-center justify-center gap-2">
                 <Link to={`/dashboard/users/${row.original.id}/edit`} className="font-semibold text-blue-500">Edit</Link>
+                <span>|</span>
+                <Link to={`/dashboard/users/${row.original.id}/update-role`} className="font-semibold text-orange-500">Change Role</Link>
             </div>
         ),
         size: 10

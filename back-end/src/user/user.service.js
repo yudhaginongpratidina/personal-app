@@ -1,4 +1,4 @@
-import { get_all_user, get_user_by_id, delete_user_by_id, create_user, count_username, update_user_by_id, delete_many_user_by_id } from "./user.repository.js"
+import { get_all_user, get_user_by_id, delete_user_by_id, create_user, count_username, update_user_by_id, delete_many_user_by_id, update_role_by_id } from "./user.repository.js"
 import ResponseError from "../../helper/response_error.helper.js"
 import bcrypt from "bcrypt"
 
@@ -64,6 +64,17 @@ export const UPDATE_USER_BY_ID = async (id, data) => {
         username : data.username
     })
 
+    return response
+}
+
+export const UPDATE_ROLE_BY_ID = async (id, role) => {
+    const id_exist = await get_user_by_id(id)
+
+    if (!id_exist) {
+        throw new ResponseError(400, "user not found")
+    }
+    
+    const response = await update_role_by_id(id, role)
     return response
 }
 

@@ -5,7 +5,7 @@ import { IoSettingsSharp } from "react-icons/io5";
 import { useAppDispatch } from "@/store/hooks";
 import { logout } from "@/store/slices/credential.slice";
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+export default function DashboardLayout({ title, buttonBack, children }: { title?: string, buttonBack?: boolean, children: React.ReactNode }) {
 
     const dispatch = useAppDispatch();
 
@@ -15,6 +15,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         e.preventDefault();
         dispatch(logout());
         window.location.href = "/";
+    }
+
+    const handleBack = async (e: React.MouseEvent) => {
+        e.preventDefault();
+        window.history.back();
     }
 
     return (
@@ -38,6 +43,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             )}
             <main className="w-full pt-20 bg-slate-100">
                 <div className="w-full min-h-screen flex flex-col gap-4 container">
+                    <div className="w-full flex justify-between items-center">
+                        {title && <h1 className="text-xl font-semibold uppercase">{title}</h1>}
+                        {buttonBack && <button onClick={handleBack} className="text-md font-semibold py-1 px-4 rounded-md bg-black hover:bg-slate-800 text-white">BACK</button>}
+                    </div>
                     {children}
                 </div>
             </main>

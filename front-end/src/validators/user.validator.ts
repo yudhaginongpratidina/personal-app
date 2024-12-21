@@ -29,3 +29,11 @@ export const updateUserFormSchema = z.object({
 })
 
 export type UpdateUserFormSchema = z.infer<typeof updateUserFormSchema>
+
+export const updateRoleUserFormSchema = z.object({
+    role: z.enum(["USER", "ADMIN"]).refine((val) => val.length >= 1, {
+        message: "role is required",
+    }),
+})
+
+export type UpdateRoleUserFormSchema = z.infer<typeof updateRoleUserFormSchema>

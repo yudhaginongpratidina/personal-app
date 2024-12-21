@@ -29,4 +29,10 @@ const updateUserSchema = z.object({
         .max(50, "username must be less than 50 characters"),
 })
 
-export { createUserSchema, updateUserSchema };
+const updateRoleUserSchema = z.object({
+    role: z.enum(["USER", "ADMIN"]).refine((val) => val.length >= 1, {
+        message: "role is required",
+    }),
+});
+
+export { createUserSchema, updateUserSchema, updateRoleUserSchema };

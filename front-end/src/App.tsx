@@ -15,6 +15,7 @@ import DashboardView from '@/views/dashboard/dashboard.view'
 import IndexUserView from '@/views/dashboard/users/index.user.view'
 import CreateUserView from '@/views/dashboard/users/create.user.view'
 import EditUserView from '@/views/dashboard/users/edit.user.view'
+import UpdateRoleUserView from '@/views/dashboard/users/update_role.user.view'
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
@@ -28,6 +29,7 @@ createRoot(document.getElementById('root')!).render(
                         <Route path="/dashboard/users" element={<IndexUserView />} />
                         <Route path="/dashboard/users/create" element={<CreateUserView />} />
                         <Route path="/dashboard/users/:id/edit" element={<EditUserView />} />
+                        <Route path='/dashboard/users/:id/update-role' element={<UpdateRoleUserView />} />
                     </Routes>
                 </Browser>
             </PersistGate>
