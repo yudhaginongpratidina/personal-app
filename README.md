@@ -1,2 +1,1 @@
-# personal-app
-PERSONAL APP
+# PERSONAL SITE
