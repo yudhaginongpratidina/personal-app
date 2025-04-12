@@ -4,11 +4,11 @@ import { FaSearch, FaTrash, FaEye, FaEdit, FaGithub, FaGlobe } from "react-icons
 
 // ui
 import ResponseMessage from "@/ui/ResponseMessage";
+import MarkdownEditor from "@/ui/MarkdownEditor";
 import UploadField from "@/ui/UploadField";
 import { Form, FormSplit } from "@/ui/Form";
 import IconButton from "@/ui/IconButton";
 import TextField from "@/ui/TextField";
-import TextArea from "@/ui/TextArea";
 import Select from "@/ui/Select";
 import Button from "@/ui/Button";
 import Modal from "@/ui/Modal";
@@ -220,7 +220,14 @@ export default function Portfolio() {
                     )}
                     <TextField name="title" type="text" value={formData.title} onChange={handleChange} required />
                     <TextField name="tech_stack" type="text" value={formData.tech_stack} onChange={handleChange} required />
-                    <TextArea name="description" value={formData.description} onChange={handleChange} rows={5} required />
+                    <MarkdownEditor
+                        name="description"
+                        value={formData.description}
+                        onChange={(value: any) => setFormData((prev) => ({ ...prev, description: value || "" }))}
+                        mode="edit"
+                        dataColorMode="light"
+                        required
+                    />
                     <FormSplit>
                         <TextField
                             prefixIcon={<FaGithub className="w-4 h-4" />}

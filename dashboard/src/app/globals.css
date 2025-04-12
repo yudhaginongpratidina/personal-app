@@ -1,26 +1,62 @@
-/* 
-   Import Tailwind CSS for utility-first styling.
-   Tailwind CSS provides a set of utility classes to build custom designs directly in your HTML.
-*/
+/* Tailwind */
 @import "tailwindcss";
 
-/* 
-   Global Styles:
-   These styles are applied to all elements (*) to hide the scrollbar across different browsers.
-   This ensures a cleaner UI by removing unnecessary scrollbars.
-   
-   Browser-specific implementations:
-   - `::-webkit-scrollbar`: Hides the scrollbar in WebKit-based browsers (e.g., Chrome, Safari).
-   - `-ms-overflow-style: none`: Disables the scrollbar in Internet Explorer.
-   - `scrollbar-width: none`: Hides the scrollbar in Firefox.
-*/
+/* ============================================================================================ */
+/* Global style untuk scroll bar - start */
+/* ============================================================================================ */
 * {
-    /* WebKit-based browsers (Chrome, Safari) */
-    ::-webkit-scrollbar { display: none;}
-
-    /* Internet Explorer */
+    
+    /* For browser chrome and safari */
+    ::-webkit-scrollbar {
+        display: none;
+    }
+    
+    /* For browser internet explorer */
     -ms-overflow-style: none;
-
-    /* Firefox */
+    
+    /* For Firefox */
     scrollbar-width: none;
 }
+/* ============================================================================================ */
+/* Global style untuk scroll bar - end */
+/* ============================================================================================ */
+
+
+
+/* ============================================================================================ */
+/* Global style untuk markdown - start */
+/* ============================================================================================ */
+.wmde-markdown ol {
+    list-style-type: decimal;
+    margin-left: 1.5rem;
+    padding-left: 1rem;
+}
+
+.wmde-markdown ul {
+    list-style-type: disc;
+    margin-left: 1.5rem;
+    padding-left: 1rem;
+}
+
+.wmde-markdown li {
+    margin-bottom: 0.25rem;
+}
+
+.wmde-markdown li ul,
+.wmde-markdown li ol {
+    margin-top: 0.25rem;
+}
+
+.wmde-markdown {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+}
+
+.wmde-markdown pre,
+.wmde-markdown code {
+    background-color: rgba(0, 0, 0, 0.644) !important;
+    color: #ffffff;
+}
+/* ============================================================================================ */
+/* Global style untuk markdown - end */
+/* ============================================================================================ */
