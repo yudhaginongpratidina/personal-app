@@ -74,7 +74,7 @@ export default function Page() {
                 <ResponseMessage message={status.message} isError={status.isError} />
                 <FormSplit>
                     <TextField name="first_name" type="text" value={formData.first_name} onChange={handleChange} required />
-                    <TextField name="last_name" type="text" value={formData.last_name} onChange={handleChange} />
+                    <TextField name="last_name" type="text" value={formData.last_name} onChange={handleChange} optilnal />
                 </FormSplit>
                 <TextField name="username" type="text" value={formData.username} onChange={handleChange} prefixIcon={<FaUser className="w-5 h-5"/>} required />
                 <TextField name="email" type="email" value={formData.email} onChange={handleChange} prefixIcon={<MdEmail className="w-5 h-5"/>} required />

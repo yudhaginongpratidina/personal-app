@@ -4,12 +4,14 @@ import clsx from "clsx";
 
 interface TextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
     name: string;
-    type: "text" | "email" | "password" | "number" | "date" | "time" | "search";
+    type: "text" | "email" | "password" | "number" | "date" | "time" | "search" | "url" | "file";
     value: string;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     prefixIcon?: JSX.Element;
     suffixIcon?: JSX.Element;
     required?: boolean;
+    hideLabel?: boolean;
+    optilnal?: boolean;
 }
 
 const TextField: React.FC<TextFieldProps> = ({
@@ -20,15 +22,21 @@ const TextField: React.FC<TextFieldProps> = ({
     prefixIcon = null,
     suffixIcon = null,
     required = false,
+    hideLabel = false,
+    optilnal = false,
     ...props
 }) => {
     const inputRef = useRef<HTMLInputElement>(null);
 
     return (
         <div className="w-full select-none">
-            <label htmlFor={name} className="text-sm capitalize text-gray-600">
-                {name.replace(/_/g, " ").toLowerCase()}
-            </label>
+            {!hideLabel && (
+                <label htmlFor={name} className="text-sm capitalize flex items-center gap-0.5 text-gray-600">
+                    {name.replace(/_/g, " ").toLowerCase()}
+                    {required && <span className="text-red-500">*</span>}
+                    {optilnal && <span className="lowercase text-gray-500">(optional)</span>}
+                </label>
+            )}
             <div className="w-full relative">
                 {prefixIcon && (
                     <span className="absolute top-1/2 left-3 -translate-y-1/2 text-gray-400">

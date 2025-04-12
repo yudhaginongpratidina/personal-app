@@ -17,7 +17,7 @@ export default function MainContent({ children }: { children: React.ReactNode })
     )
 
     return (
-        <main className={mainClasses}>
+        <main className={`${mainClasses}`}>
             {children}
         </main>
     );

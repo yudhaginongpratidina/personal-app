@@ -1,9 +1,9 @@
 import React from 'react';
 import clsx from 'clsx';
 
-export const Form = ({ onSubmit, children }: { onSubmit: React.FormEventHandler<HTMLFormElement>, children: React.ReactNode }) => {
+export const Form = ({ onSubmit, enctype, children}: { onSubmit: React.FormEventHandler<HTMLFormElement>, enctype?: boolean, children: React.ReactNode }) => {
     return (
-        <form onSubmit={onSubmit} className="w-full flex flex-col gap-4">
+        <form onSubmit={onSubmit} encType={enctype ? "multipart/form-data" : ""} className="w-full flex flex-col gap-4">
             {children}
         </form>
     );
