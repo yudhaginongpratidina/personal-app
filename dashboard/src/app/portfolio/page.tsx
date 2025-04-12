@@ -128,6 +128,7 @@ export default function Portfolio() {
         try {
             console.log(id);
             displayMessage(false, "Portfolio deleted successfully");
+            setConfirmDelete(false);
         } catch (error: any) {
             const errorMessage = error?.response?.data?.message || error?.response?.data[0]?.message || "An error occurred";
             displayMessage(true, errorMessage);
