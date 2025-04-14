@@ -12,7 +12,6 @@ import { HiMenu } from "react-icons/hi";
 import Brand from "@/components/UI/Brand";
 import IconButton from "@/components/UI/IconButton";
 
-
 // interfaces
 interface NavbarProps {
     onToggleSidebar?: () => void;
