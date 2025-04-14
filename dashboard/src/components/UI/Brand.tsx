@@ -1,22 +1,23 @@
+import Link from "next/link";
 import { JSX, useMemo } from "react";
 
-interface BranProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-    icon: JSX.Element;
+interface BranProps {
     name: string;
-    onClick: () => void;
+    href: string;
+    icon: JSX.Element;
     className?: string;
 }
 
-export default function Brand({ icon, name, onClick, className = "", ...props }: BranProps) {
+export default function Brand({ name, href, icon, className = "", ...props }: BranProps) {
 
     const brandClassName = useMemo(() => {
         return `flex items-center gap-2 ${className}`;
     }, [className]);
 
     return (
-        <button type="button" onClick={onClick} className={brandClassName} {...props}>
+        <Link href={href || "/"} className={brandClassName} {...props}>
             {icon}
             <h1 className="text-lg font-bold uppercase">{name}</h1>
-        </button>
+        </Link>
     )
 }
