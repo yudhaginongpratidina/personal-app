@@ -3,7 +3,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import "../utils/disable-console.ts";
 
-import Master from "@/components/Master";
+import MasterLayout from "@/components/Layout/MasterLayout";
 
 const poppins = Poppins({
     subsets: ['latin'],
@@ -17,9 +17,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return (
         <html lang="en">
             <body className={`${poppins.variable} antialiased select-none`}>
-                <Master>
+                <MasterLayout>
                     {children}
-                </Master>
+                </MasterLayout>
             </body>
         </html>
     );

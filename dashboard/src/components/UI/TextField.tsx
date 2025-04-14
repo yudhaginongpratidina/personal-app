@@ -12,6 +12,7 @@ interface TextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
     required?: boolean;
     hideLabel?: boolean;
     optilnal?: boolean;
+    disabled?: boolean;
 }
 
 const TextField: React.FC<TextFieldProps> = ({
@@ -24,6 +25,7 @@ const TextField: React.FC<TextFieldProps> = ({
     required = false,
     hideLabel = false,
     optilnal = false,
+    disabled = false,
     ...props
 }) => {
     const inputRef = useRef<HTMLInputElement>(null);
@@ -57,10 +59,12 @@ const TextField: React.FC<TextFieldProps> = ({
                             "pl-10": prefixIcon && !suffixIcon,
                             "pr-10": suffixIcon && !prefixIcon,
                             "pl-2.5 pr-2.5": !prefixIcon && !suffixIcon,
-                        }
+                        },
+                        disabled ? "bg-gray-200 cursor-not-allowed" : "bg-white"
                     )}
                     required={required}
                     autoComplete="off"
+                    disabled={disabled}
                     {...props}
                 />
                 {suffixIcon && (
