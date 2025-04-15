@@ -8,6 +8,7 @@ import express from "express";
 // --------------------------------------------------------------------------------
 import WellcomeController from "../domains/wellcome/wellcome.controller.js";
 import AuthenticationController from "../domains/authentication/authentication.controller.js";
+import AccountController from "../domains/account/account.controller.js";
 
 // --------------------------------------------------------------------------------
 // initialize express
@@ -23,6 +24,9 @@ api.post("/auth/register", AuthenticationController.register);
 api.post("/auth/login", AuthenticationController.login);
 api.get("/auth/token", AuthenticationController.refresh_token);
 api.get("/auth/logout", AuthenticationController.logout);
+
+api.get("/account/:username", AccountController.show);
+api.patch("/account/:username", AccountController.update);
 
 // --------------------------------------------------------------------------------
 // export default
