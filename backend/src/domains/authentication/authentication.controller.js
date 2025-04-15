@@ -48,6 +48,24 @@ export default class AuthenticationController {
         }
     }
 
+    static async refresh_token(req, res, next) {
+        try {
+            const refresh_token = req.cookies.refresh_token;
+            if (!refresh_token) return res.sendStatus(401);
+
+            const decoded = jwt.verify(refresh_token, process.env.REFRESH_TOKEN_SECRET);
+            if (!decoded) return res.sendStatus(403);
+
+            const id = decoded.id;
+            const role = decoded.role;
+            const access_token = jwt.sign({ id, role }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN });
+
+            res.status(200).json({ message: "Token refreshed successfully", data: { token: access_token } });
+        } catch (error) {
+            next(error);
+        }
+    }
+
     static async logout(req, res, next) {
         try {
             if (!req.cookies.refresh_token) return res.status(401).json({ message: "user not logged in" });

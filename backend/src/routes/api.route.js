@@ -18,9 +18,11 @@ const api = express.Router();
 // routes - api
 // --------------------------------------------------------------------------------
 api.get("/", WellcomeController.index);
-api.post("/register", AuthenticationController.register);
-api.post("/login", AuthenticationController.login);
-api.get("/logout", AuthenticationController.logout);
+
+api.post("/auth/register", AuthenticationController.register);
+api.post("/auth/login", AuthenticationController.login);
+api.get("/auth/token", AuthenticationController.refresh_token);
+api.get("/auth/logout", AuthenticationController.logout);
 
 // --------------------------------------------------------------------------------
 // export default

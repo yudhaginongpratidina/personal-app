@@ -18,7 +18,7 @@ describe("AuthenticationController", () => {
     describe("test register", () => {
 
         it("should return a 400 status code if fields are empty", async () => {
-            const response = await request(api).post('/register').send({
+            const response = await request(api).post('/auth/register').send({
                 full_name: "",
                 username: "",
                 email: "",
@@ -29,7 +29,7 @@ describe("AuthenticationController", () => {
         })
 
         it("should return a 400 status code if password and confirm password are not the same", async () => {
-            const response = await request(api).post('/register').send({
+            const response = await request(api).post('/auth/register').send({
                 full_name: "user test",
                 username: "user_test",
                 email: "user@test.com",
@@ -41,7 +41,7 @@ describe("AuthenticationController", () => {
         })
 
         it("should return a 201 status code when user is registered successfully", async () => {
-            const response = await request(api).post('/register').send({
+            const response = await request(api).post('/auth/register').send({
                 full_name: "user test",
                 username: "user_test",
                 email: "user@test.com",
@@ -61,7 +61,7 @@ describe("AuthenticationController", () => {
     describe("test login", () => {
 
         it("should return a 404 status code if user is not found when login with email", async () => {
-            const response = await request(api).post('/login').send({
+            const response = await request(api).post('/auth/login').send({
                 type: "login_with_email",
                 email: "user1@test.com",
                 password: "user1@test.com"
@@ -71,7 +71,7 @@ describe("AuthenticationController", () => {
         })
 
         it("should return a 404 status code if user is not found when login with username", async () => {
-            const response = await request(api).post('/login').send({
+            const response = await request(api).post('/auth/login').send({
                 type: "login_with_username",
                 username: "user1",
                 password: "user1@test.com"
@@ -81,7 +81,7 @@ describe("AuthenticationController", () => {
         })
 
         it("should return a 200 status code if user login with email", async () => {
-            const response = await request(api).post('/login').send({
+            const response = await request(api).post('/auth/login').send({
                 type: "login_with_email",
                 email: "user@test.com",
                 password: "user@test.com"
@@ -92,7 +92,7 @@ describe("AuthenticationController", () => {
         })
 
         it("should return a 200 status code if user login with username", async () => {
-            const response = await request(api).post('/login').send({
+            const response = await request(api).post('/auth/login').send({
                 type: "login_with_username",
                 username: "user_test",
                 password: "user@test.com"
@@ -103,7 +103,7 @@ describe("AuthenticationController", () => {
         })
 
         it("should return a 401 status code if user login but password is wrong", async () => {
-            const response = await request(api).post('/login').send({
+            const response = await request(api).post('/auth/login').send({
                 type: "login_with_username",
                 username: "user_test",
                 password: "wrong_password"
@@ -113,21 +113,41 @@ describe("AuthenticationController", () => {
         })
     });
 
-    describe("test logout", () => {
-        it("should return a 200 status code if user login successfully", async () => {
-            const loginResponse = await request(api).post("/login").send({
+    describe("test get redresh token", () => {
+        it("should refresh token successfully", async () => {
+            const loginResponse = await request(api).post("/auth/login").send({
                 type: "login_with_username",
                 username: "user_test",
                 password: "user@test.com"
             });
             const cookies = loginResponse.headers["set-cookie"];
-            const response = await request(api).get("/logout").set("Cookie", cookies);
+            const response = await request(api).get("/auth/token").set("Cookie", cookies);
+            expect(response.status).toBe(200);
+            expect(response.body.message).toBe("Token refreshed successfully");
+            expect(response.body.data.token).toBeDefined();
+        });
+
+        it("should return 401 if no refresh token is provided", async () => {
+            const response = await request(api).get("/auth/token");
+            expect(response.status).toBe(401);
+        });
+    });
+
+    describe("test logout", () => {
+        it("should return a 200 status code if user login successfully", async () => {
+            const loginResponse = await request(api).post("/auth/login").send({
+                type: "login_with_username",
+                username: "user_test",
+                password: "user@test.com"
+            });
+            const cookies = loginResponse.headers["set-cookie"];
+            const response = await request(api).get("/auth/logout").set("Cookie", cookies);
             expect(response.status).toBe(200);
             expect(response.body.message).toBe("Logout success");
         });
 
         it("should return 401 if user is not logged in", async () => {
-            const response = await request(api).get("/logout");
+            const response = await request(api).get("/auth/logout");
             expect(response.status).toBe(401);
             expect(response.body.message).toBe("user not logged in");
         });
