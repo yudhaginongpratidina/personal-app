@@ -88,6 +88,7 @@ describe("AuthenticationController", () => {
             });
             expect(response.status).toBe(200);
             expect(response.body.message).toBe("user logged in successfully");
+            expect(response.body.data.token).toBeDefined();
         })
 
         it("should return a 200 status code if user login with username", async () => {
@@ -98,6 +99,7 @@ describe("AuthenticationController", () => {
             });
             expect(response.status).toBe(200);
             expect(response.body.message).toBe("user logged in successfully");
+            expect(response.body.data.token).toBeDefined();
         })
 
         it("should return a 401 status code if user login but password is wrong", async () => {
