@@ -15,7 +15,7 @@ export default class AccountRepository {
             where: {
                 username: username
             },
-            data: data
+            data: { updated_at: new Date(), ...data }
         })        
     }
 
