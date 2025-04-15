@@ -12,14 +12,14 @@ const ErrorMiddleware = async (error, req, res, next) => {
         const { issues } = error;
         const status = 400;
         res.status(status).json({
-            message: issues.map((issue) => ({
+            data: issues.map((issue) => ({
                 path: issue.path[0],
-                message: issue.message,
-            })),
+                message: issue.message
+            }))
         });
     } else if (error instanceof ResponseError) {
         res.status(error.status).json({
-            errors: error.message,
+            message: error.message,
         });
     } else {
         res.status(500).json({
