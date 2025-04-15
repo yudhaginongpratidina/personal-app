@@ -14,6 +14,8 @@ describe("AccountController", () => {
         await prismaClient.$disconnect();
     });
 
+    let token;
+
     describe("register", () => {
         it("should return a 201 status code when user is registered successfully", async () => {
             const response = await request(api).post('/auth/register').send({
@@ -29,6 +31,19 @@ describe("AccountController", () => {
             expect(response.body.data.username).toBe("user_test");
             expect(response.body.data.email).toBe("user@test.com");
             expect(response.body.data.role).toBe("user");
+        })
+
+        it("should return a 200 status code when user is login successfully", async () => {
+            const response = await request(api).post('/auth/login').send({
+                type: "login_with_username",
+                username: "user_test",
+                password: "user@test.com"
+            });
+            expect(response.status).toBe(200);
+            expect(response.body.message).toBe("user logged in successfully");
+            expect(response.body.data.token).toBeDefined();
+
+            token = response.body.data.token
         })
     })
 
@@ -47,42 +62,50 @@ describe("AccountController", () => {
     });
 
     describe("update account test", () => {
-        it("should return a 200 status code when update account - full name", async () => {
-            const response = await request(api).patch('/account/user_test').send({
-                type : "update_full_name",
-                full_name: "user update"
-            });
+        it("should return a 200 status code when update account - full name", async () => { 
+            const response = await request(api).patch('/account/user_test')
+                .set("Authorization", `Bearer ${token}`)
+                .send({
+                    type: "update_full_name",
+                    full_name: "user update"
+                });
             expect(response.status).toBe(200);
             expect(response.body.message).toBe("account updated");
             expect(response.body.data.full_name).toBe("user update");
         })
 
         it("should return a 200 status code when update account - bio", async () => {
-            const response = await request(api).patch('/account/user_test').send({
-                type : "update_bio",
-                bio: "bio update"
-            });
+            const response = await request(api).patch('/account/user_test')
+                .set("Authorization", `Bearer ${token}`)
+                .send({
+                    type: "update_bio",
+                    bio: "bio update"
+                });
             expect(response.status).toBe(200);
             expect(response.body.message).toBe("account updated");
             expect(response.body.data.bio).toBe("bio update");
         })
 
         it("should return a 200 status code when update account - password", async () => {
-            const response = await request(api).patch('/account/user_test').send({
-                type : "update_password",
-                old_password: "user@test.com",
-                new_password: "user@update.com",
-                confirm_password: "user@update.com"
-            });
+            const response = await request(api).patch('/account/user_test')
+                .set("Authorization", `Bearer ${token}`)
+                .send({
+                    type: "update_password",
+                    old_password: "user@test.com",
+                    new_password: "user@update.com",
+                    confirm_password: "user@update.com"
+                });
             expect(response.status).toBe(200);
             expect(response.body.message).toBe("account updated");
         })
 
         it("should return a 200 status code when update account - image", async () => {
-            const response = await request(api).patch('/account/user_test').send({
-                type : "update_image",
-                image : "update image"
-            });
+            const response = await request(api).patch('/account/user_test')
+                .set("Authorization", `Bearer ${token}`)
+                .send({
+                    type: "update_image",
+                    image: "update image"
+                });
             expect(response.status).toBe(200);
             expect(response.body.message).toBe("account updated");
             expect(response.body.data.image).toBe("update image");
