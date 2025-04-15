@@ -9,6 +9,7 @@ import express from "express";
 import WellcomeController from "../domains/wellcome/wellcome.controller.js";
 import AuthenticationController from "../domains/authentication/authentication.controller.js";
 import AccountController from "../domains/account/account.controller.js";
+import UsersController from "../domains/users/users.controller.js";
 
 // --------------------------------------------------------------------------------
 // middlewares
@@ -34,6 +35,8 @@ api.patch("/account/restore", AccountController.restore);
 api.get("/account/:username", AccountController.show);
 api.patch("/account/:username", VerifyTokenMiddleware, AccountController.update);
 api.delete("/account/:username", VerifyTokenMiddleware, AccountController.soft_delete);
+
+api.get("/users", UsersController.index);
 
 // --------------------------------------------------------------------------------
 // export default
