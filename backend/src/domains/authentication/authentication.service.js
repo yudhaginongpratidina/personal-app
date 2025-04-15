@@ -21,4 +21,32 @@ export default class AuthenticationService {
         return await AuthenticationRepository.register(data);
     }
 
+    static async login_with_email(data) {
+        const user = await AuthenticationRepository.find_email(data.email);
+        if (!user) {
+            throw new ResponseError(404, "user not found");
+        }
+
+        const passwordMatch = await bcrypt.compare(data.password, user.password);
+        if (!passwordMatch) {
+            throw new ResponseError(401, "wrong password");
+        }
+
+        return user;
+    }
+
+    static async login_with_username(data) {
+        const user = await AuthenticationRepository.find_username(data.username);
+        if (!user) {
+            throw new ResponseError(404, "user not found");
+        }
+
+        const passwordMatch = await bcrypt.compare(data.password, user.password);
+        if (!passwordMatch) {
+            throw new ResponseError(401, "wrong password");
+        }
+
+        return user;
+    }
+
 }

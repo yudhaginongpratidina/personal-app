@@ -31,4 +31,41 @@ export default class AuthenticationValidation {
         path: ['confirm_password'],
     });
 
+    static LOGIN = z
+        .object({
+            type: z.enum(['login_with_username', 'login_with_email'], {
+                errorMap: () => ({ message: 'Type must be login_with_username or login_with_email' }),
+            }),
+            username: z
+                .string()
+                .min(3, 'Username must be at least 3 characters long')
+                .max(20, 'Username must be at most 20 characters long')
+                .optional(),
+            email: z
+                .string()
+                .email('Email must be valid')
+                .optional(),
+            password: z
+                .string()
+                .min(6, 'Password must be at least 6 characters long')
+                .max(20, 'Password must be at most 20 characters long'),
+        })
+        .superRefine((data, ctx) => {
+            if (data.type === 'login_with_username' && !data.username) {
+                ctx.addIssue({
+                    path: ['username'],
+                    message: 'Username is required when using login_with_username',
+                    code: z.ZodIssueCode.custom,
+                });
+            }
+
+            if (data.type === 'login_with_email' && !data.email) {
+                ctx.addIssue({
+                    path: ['email'],
+                    message: 'Email is required when using login_with_email',
+                    code: z.ZodIssueCode.custom,
+                });
+            }
+        });
+
 }

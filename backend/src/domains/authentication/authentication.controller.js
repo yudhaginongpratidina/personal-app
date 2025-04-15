@@ -17,4 +17,24 @@ export default class AuthenticationController {
         }
     }
 
+    static async login(req, res, next) {
+        try {
+            const data = await Validation.validate(AuthenticationValidation.LOGIN, req.body);
+
+            const loginMethodMap = {
+                login_with_username: AuthenticationService.login_with_username,
+                login_with_email: AuthenticationService.login_with_email,
+            };
+
+            const response = await loginMethodMap[data.type](data);
+            res.status(200).json({
+                message: "user logged in successfully",
+                data: response
+            });
+        } catch (e) {
+            next(e);
+        }
+    }
+
+
 }

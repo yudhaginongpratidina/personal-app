@@ -57,4 +57,58 @@ describe("AuthenticationController", () => {
         })
 
     });
+
+    describe("test register", () => {
+
+        it("should return a 404 status code if user is not found when login with email", async () => {
+            const response = await request(api).post('/login').send({
+                type : "login_with_email",
+                email: "user1@test.com",
+                password: "user1@test.com"
+            });
+            expect(response.status).toBe(404);
+            expect(response.body.message).toBe("user not found");
+        })
+
+        it("should return a 404 status code if user is not found when login with username", async () => {
+            const response = await request(api).post('/login').send({
+                type : "login_with_username",
+                username: "user1",
+                password: "user1@test.com"
+            });
+            expect(response.status).toBe(404);
+            expect(response.body.message).toBe("user not found");
+        })
+
+        it("should return a 200 status code if user login with email", async () => {
+            const response = await request(api).post('/login').send({
+                type : "login_with_email",
+                email: "user@test.com",
+                password: "user@test.com"
+            });
+            expect(response.status).toBe(200);
+            expect(response.body.message).toBe("user logged in successfully");
+        })
+
+        it("should return a 200 status code if user login with username", async () => {
+            const response = await request(api).post('/login').send({
+                type : "login_with_username",
+                username: "user_test",
+                password: "user@test.com"
+            });
+            expect(response.status).toBe(200);
+            expect(response.body.message).toBe("user logged in successfully");
+        })
+
+        it("should return a 401 status code if user login but password is wrong", async () => {
+            const response = await request(api).post('/login').send({
+                type : "login_with_username",
+                username: "user_test",
+                password: "wrong_password"
+            });
+            expect(response.status).toBe(401);
+            expect(response.body.message).toBe("wrong password");
+        })
+    });
+
 });
