@@ -19,4 +19,13 @@ export default class AccountRepository {
         })        
     }
 
+    static soft_delete_account_by_username (username) {
+        return prismaClient.user.update({
+            where: {
+                username: username
+            },
+            data: { deleted_at: new Date() }
+        })        
+    }
+
 }

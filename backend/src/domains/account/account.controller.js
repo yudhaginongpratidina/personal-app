@@ -90,7 +90,41 @@ export default class AccountController {
                 message: 'account updated',
                 data: response,
             });
-            
+
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    static async soft_delete(req, res, next) {
+        try {
+            // request param
+            const { username } = req.params;
+
+            // get token
+            const authHeader = req.headers['authorization'];
+            const token = authHeader?.split(' ')[1];
+
+            // decode token
+            let decoded;
+            decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+
+            // check account, if account id match with decoded id
+            const account = await AccountService.find_by_username(username);
+            if (decoded.id !== account.id) {
+                return res.status(403).json({ message: 'You are not allowed to delete this account' });
+            }
+
+            // validate
+            const data = await Validation.validate(AccountValidation.SOFT_DELETE, req.body);
+
+            if (data.confirm_delete === "DELETE ACCOUNT") {
+                const response = await AccountService.soft_delete_account(username);
+                res.status(200).json({
+                    message: 'account deleted',
+                    data: response,
+                });
+            }
         } catch (e) {
             next(e);
         }

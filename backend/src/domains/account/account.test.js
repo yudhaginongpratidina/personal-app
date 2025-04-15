@@ -140,4 +140,23 @@ describe("AccountController", () => {
         })
     });
 
+    describe("delete account test", () => {
+        it("should return a 403 status code when delete account but not account owner", async () => {
+            const response = await request(api).delete('/account/user_test_1')
+                .set("Authorization", `Bearer ${token}`);
+            expect(response.status).toBe(403);
+            expect(response.body.message).toBe("You are not allowed to delete this account");
+        })
+
+        it("should return a 200 status code when delete account", async () => {
+            const response = await request(api).delete('/account/user_test')
+                .set("Authorization", `Bearer ${token}`)
+                .send({
+                    confirm_delete: "DELETE ACCOUNT"
+                });
+            expect(response.status).toBe(200);
+            expect(response.body.message).toBe("account deleted");
+        })
+    })
+
 });

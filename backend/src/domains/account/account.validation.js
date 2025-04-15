@@ -112,4 +112,13 @@ export default class AccountValidation {
                     break;
             }
         });
+
+    static SOFT_DELETE = z.object({
+        confirm_delete: z
+            .string()
+            .nonempty('Confirm delete is required')
+            .refine((val) => val === 'DELETE ACCOUNT', {
+                message: 'You must type "DELETE ACCOUNT" to confirm',
+            }),
+    });
 }

@@ -49,4 +49,12 @@ export default class AccountService {
         }
         
     }
+
+    static async soft_delete_account(username) {
+        const account = await AccountService.find_by_username(username);
+        if (!account) {
+            throw new ResponseError(404, "account not found");
+        }
+        return AccountRepository.soft_delete_account_by_username(username);
+    }
 }

@@ -32,6 +32,7 @@ api.get("/auth/logout", AuthenticationController.logout);
 
 api.get("/account/:username", AccountController.show);
 api.patch("/account/:username", VerifyTokenMiddleware, AccountController.update);
+api.delete("/account/:username", VerifyTokenMiddleware, AccountController.soft_delete);
 
 // --------------------------------------------------------------------------------
 // export default
