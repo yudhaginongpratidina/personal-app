@@ -84,7 +84,7 @@ describe("AuthenticationController", () => {
             const response = await request(api).post('/auth/login').send({
                 type: "login_with_email",
                 email: "user@test.com",
-                password: "user@test.com"
+                password: "user@test.com" 
             });
             expect(response.status).toBe(200);
             expect(response.body.message).toBe("user logged in successfully");
