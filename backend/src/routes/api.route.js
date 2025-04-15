@@ -30,6 +30,7 @@ api.post("/auth/login", AuthenticationController.login);
 api.get("/auth/token", AuthenticationController.refresh_token);
 api.get("/auth/logout", AuthenticationController.logout);
 
+api.patch("/account/restore", AccountController.restore);
 api.get("/account/:username", AccountController.show);
 api.patch("/account/:username", VerifyTokenMiddleware, AccountController.update);
 api.delete("/account/:username", VerifyTokenMiddleware, AccountController.soft_delete);

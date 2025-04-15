@@ -138,4 +138,17 @@ export default class AccountController {
             next(e);
         }
     }
+
+    static async restore(req, res, next) {
+        try {
+            const data = await Validation.validate(AccountValidation.RESTORE, req.body);
+            const response = await AccountService.restore_account(data);
+            res.status(200).json({
+                message: 'account restored',
+                data: response,
+            });
+        } catch (e) {
+            next(e);
+        }
+    }
 }

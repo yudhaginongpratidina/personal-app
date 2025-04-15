@@ -10,6 +10,14 @@ export default class AccountRepository {
         });
     }
 
+    static find_by_email (email) {
+        return prismaClient.user.findUnique({
+            where: {
+                email: email
+            }
+        });
+    }
+
     static update_account_by_username (username, data) {
         return prismaClient.user.update({
             where: {
@@ -26,6 +34,15 @@ export default class AccountRepository {
             },
             data: { deleted_at: new Date() }
         })        
+    }
+
+    static restore_account_by_email (email) {
+        return prismaClient.user.update({
+            where: {
+                email: email
+            },
+            data: { deleted_at: null }
+        })
     }
 
 }

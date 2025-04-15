@@ -57,4 +57,18 @@ export default class AccountService {
         }
         return AccountRepository.soft_delete_account_by_username(username);
     }
+
+    static async restore_account(data) {
+        const account = await AccountRepository.find_by_email(data.email);
+        if (!account) {
+            throw new ResponseError(404, "account not found");
+        }
+
+        const passwordMatch = await bcrypt.compare(data.password, account.password);
+        if (!passwordMatch) {
+            throw new ResponseError(401, "wrong password");
+        }
+
+        return AccountRepository.restore_account_by_email(data.email);
+    }
 }

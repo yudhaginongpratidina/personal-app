@@ -201,4 +201,26 @@ describe("AccountController", () => {
         })
     })
 
+    describe("restore account test", () => {
+        it("should return a 200 status code when restore account", async () => {
+            const response = await request(api).patch('/account/restore').send({
+                email: "user@test.com",
+                password: "user@update.com"
+            })
+            expect(response.status).toBe(200);
+            expect(response.body.message).toBe("account restored");
+        })
+
+        it("should return a 200 status code if user login with email after restore", async () => {
+            const response = await request(api).post('/auth/login').send({
+                type: "login_with_email",
+                email: "user@test.com",
+                password: "user@update.com"
+            });
+            expect(response.status).toBe(200);
+            expect(response.body.message).toBe("user logged in successfully");
+            expect(response.body.data.token).toBeDefined();
+        })
+    })
+
 });
