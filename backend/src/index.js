@@ -1,8 +1,8 @@
 // --------------------------------------------------------------------------------
 // dependencies
 // --------------------------------------------------------------------------------
-import app from "@/application/app";
-import logger from "@/application/logging";
+import app from "./application/app.js";
+import logger from "./application/logging.js";
 import dotenv from 'dotenv';
 
 // --------------------------------------------------------------------------------

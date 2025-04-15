@@ -2,7 +2,9 @@
 // configure response error
 // --------------------------------------------------------------------------------
 export default class ResponseError extends Error {
-    constructor(public status: number, public message: string) {
+    constructor(status, message) {
         super(message);
+        this.status = status;
+        this.message = message;
     }
 }

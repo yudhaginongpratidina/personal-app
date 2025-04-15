@@ -1,20 +1,16 @@
-import { Request, Response, NextFunction } from "express";
-import WellcomeService from "./wellcome.service";
-
 export default class WellcomeController {
-    static async index(req: Request, res: Response, next: NextFunction) {
+    static async index(req, res, next) {
         try {
-            const response = await WellcomeService.index();
-            res.json({
-                msg: "successfuly",
-                data: response
+            res.status(200).json({
+                message: "successfuly",
+                data: "api is running"
             });
         } catch (e) {
             next(e);
         }
     }
 
-    static async create(req: Request, res: Response, next: NextFunction) {
+    static async create(req, res, next) {
         try {
             res.send("Wellcome create form");
         } catch (e) {
@@ -22,7 +18,7 @@ export default class WellcomeController {
         }
     }
 
-    static async store(req: Request, res: Response, next: NextFunction) {
+    static async store(req, res, next) {
         try {
             res.send("Wellcome stored");
         } catch (e) {
@@ -30,7 +26,7 @@ export default class WellcomeController {
         }
     }
 
-    static async show(req: Request, res: Response, next: NextFunction) {
+    static async show(req, res, next) {
         try {
             const { id } = req.params;
             res.send(`Wellcome show ${id}`);
@@ -39,7 +35,7 @@ export default class WellcomeController {
         }
     }
 
-    static async edit(req: Request, res: Response, next: NextFunction) {
+    static async edit(req, res, next) {
         try {
             const { id } = req.params;
             res.send(`Wellcome edit ${id}`);
@@ -48,7 +44,7 @@ export default class WellcomeController {
         }
     }
 
-    static async update(req: Request, res: Response, next: NextFunction) {
+    static async update(req, res, next) {
         try {
             const { id } = req.params;
             res.send(`Wellcome updated ${id}`);
@@ -57,7 +53,7 @@ export default class WellcomeController {
         }
     }
 
-    static async destroy(req: Request, res: Response, next: NextFunction) {
+    static async destroy(req, res, next) {
         try {
             const { id } = req.params;
             res.send(`Wellcome deleted ${id}`);

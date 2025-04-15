@@ -8,13 +8,13 @@ import cookieParser from 'cookie-parser';
 // --------------------------------------------------------------------------------
 // dependencies - routes
 // --------------------------------------------------------------------------------
-import api from "@/routes/api.route";
+import api from "../routes/api.route.js";
 
 // --------------------------------------------------------------------------------
 // dependencies - custom middleware
 // --------------------------------------------------------------------------------
-import NotFoundMiddleware from '@/middlewares/NotFoundMiddleware';
-import ErrorMiddleware from "@/middlewares/ErrorMiddleware";
+import NotFoundMiddleware from '../middleware/NotFoundMiddleware.js';
+import ErrorMiddleware from '../middleware/ErrorMiddleware.js';
 
 // --------------------------------------------------------------------------------
 // initialize express

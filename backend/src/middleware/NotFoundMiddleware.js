@@ -1,13 +1,12 @@
 // --------------------------------------------------------------------------------
 // dependencies
 // --------------------------------------------------------------------------------
-import { Request, Response, NextFunction } from 'express';
 import kleur from 'kleur';
 
 // --------------------------------------------------------------------------------
 // configure not found middleware
 // --------------------------------------------------------------------------------
-const NotFoundMiddleware = (req: Request, res: Response, next: NextFunction) => {
+const NotFoundMiddleware = (req, res, next) => {
     const method = req.method;
     const path = req.path;
 

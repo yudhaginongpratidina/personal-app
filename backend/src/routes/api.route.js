@@ -6,7 +6,7 @@ import express from "express";
 // --------------------------------------------------------------------------------
 // controllers
 // --------------------------------------------------------------------------------
-import WellcomeController from "@/domains/wellcome/wellcome.controller";
+import WellcomeController from "../domains/wellcome/wellcome.controller.js";
 
 // --------------------------------------------------------------------------------
 // initialize express
