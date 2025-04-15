@@ -20,6 +20,7 @@ const api = express.Router();
 api.get("/", WellcomeController.index);
 api.post("/register", AuthenticationController.register);
 api.post("/login", AuthenticationController.login);
+api.get("/logout", AuthenticationController.logout);
 
 // --------------------------------------------------------------------------------
 // export default

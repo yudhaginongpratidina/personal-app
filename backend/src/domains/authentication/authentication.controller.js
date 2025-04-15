@@ -47,4 +47,14 @@ export default class AuthenticationController {
             next(e);
         }
     }
+
+    static async logout(req, res, next) {
+        try {
+            if (!req.cookies.refresh_token) return res.status(401).json({ message: "user not logged in" });
+            res.clearCookie('refresh_token', { maxAge: 0 });
+            res.status(200).json({ message: 'Logout success' });
+        } catch (error) {
+            next(error);
+        }
+    }
 }
