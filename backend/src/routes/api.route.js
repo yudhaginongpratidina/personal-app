@@ -15,6 +15,7 @@ import UsersController from "../domains/users/users.controller.js";
 // middlewares
 // --------------------------------------------------------------------------------
 import VerifyTokenMiddleware from "../middleware/VerifyTokenMiddleware.js";
+import RolePermissionMiddleware from "../middleware/RolePermissionMiddleware.js";
 
 // --------------------------------------------------------------------------------
 // initialize express
@@ -37,8 +38,8 @@ api.patch("/account/:username", VerifyTokenMiddleware, AccountController.update)
 api.delete("/account/:username", VerifyTokenMiddleware, AccountController.soft_delete);
 
 api.get("/users", UsersController.index);
-api.get("/users/:id", UsersController.show);
-api.patch("/users/:id", UsersController.update);
+api.get("/users/:id", VerifyTokenMiddleware, RolePermissionMiddleware(['admin']), UsersController.show);
+api.patch("/users/:id", VerifyTokenMiddleware, RolePermissionMiddleware(['admin']), UsersController.update);
 
 // --------------------------------------------------------------------------------
 // export default

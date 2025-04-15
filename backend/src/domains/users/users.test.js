@@ -1,5 +1,6 @@
 import request from "supertest";
 import prismaClient from "../../application/database.js";
+import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import 'dotenv/config';
 
@@ -29,12 +30,23 @@ describe("UsersController", () => {
                 role: "admin"
             }
         });
+        await prismaClient.user.create({
+            data: {
+                full_name: "user",
+                username: "user",
+                email: "user@test.com",
+                password: bcrypt.hashSync('user@test.com', 10),
+                role: "user"
+            }
+        });
     });
 
     afterAll(async () => {
         await prismaClient.user.deleteMany();
         await prismaClient.$disconnect();
     });
+
+    let token;
 
     describe("test get all users", () => {
         it("should return a 200 status code when get all users successfully", async () => {
@@ -53,10 +65,27 @@ describe("UsersController", () => {
         })
     })
 
-    describe("test get user by id", () => {
+    describe("test authentication (user logged by admin)", () => {
+        it("should return a 200 status code when user is login successfully", async () => {
+            const response = await request(api).post('/auth/login').send({
+                type: "login_with_username",
+                username: "admin",
+                password: "admin@test.com"
+            });
+            expect(response.status).toBe(200);
+            expect(response.body.message).toBe("user logged in successfully");
+            expect(response.body.data.token).toBeDefined();
+
+            token = response.body.data.token
+        })
+    })
+
+    describe("test get user by id (user logged by admin)", () => {
         it("should return a 200 status code when get user by id successfully", async () => {
             const users = await request(api).get('/users');
-            const response = await request(api).get(`/users/${users.body.data.users_by_role.user[0].id}`);
+            const response = await request(api)
+                .get(`/users/${users.body.data.users_by_role.user[0].id}`)
+                .set("Authorization", `Bearer ${token}`);
             expect(response.status).toBe(200);
             expect(response.body.message).toBe("user found");
             expect(response.body.data.id).toBeDefined();
@@ -70,16 +99,46 @@ describe("UsersController", () => {
         })
     })
 
-    describe("test update role user by id", () => {
+    describe("test update role user by id (user logged by admin)", () => {
         it("should return a 200 status code when update role user by id successfully", async () => {
             const users = await request(api).get('/users');
-            const user_by_id = await request(api).get(`/users/${users.body.data.users_by_role.user[0].id}`);
-            const response = await request(api).patch(`/users/${user_by_id.body.data.id}`).send({
-                type: "update_role",
-                role: "admin"
-            })
+            const user_by_id = await request(api)
+                .get(`/users/${users.body.data.users_by_role.user[0].id}`)
+                .set("Authorization", `Bearer ${token}`);;
+            const response = await request(api)
+                .patch(`/users/${user_by_id.body.data.id}`)
+                .set("Authorization", `Bearer ${token}`)
+                .send({
+                    type: "update_role",
+                    role: "admin"
+                })
             expect(response.status).toBe(200);
             expect(response.body.message).toBe("user role updated");
+        })
+    })
+
+    describe("test authentication (user logged by user)", () => {
+        it("should return a 200 status code when user is login successfully", async () => {
+            const response = await request(api).post('/auth/login').send({
+                type: "login_with_username",
+                username: "user",
+                password: "user@test.com"
+            });
+            expect(response.status).toBe(200);
+            expect(response.body.message).toBe("user logged in successfully");
+            expect(response.body.data.token).toBeDefined();
+
+            token = response.body.data.token
+        })
+    })
+
+    describe("test get user by id (user logged by user)", () => {
+        it("should return a 403 status code when get user by id failed but user logged by user", async () => {
+            const users = await request(api).get('/users');
+            const response = await request(api)
+                .get(`/users/${users.body.data.users_by_role.user[0].id}`)
+                .set("Authorization", `Bearer ${token}`);
+            expect(response.status).toBe(403);
         })
     })
 
