@@ -79,6 +79,11 @@ export default class AccountController {
                 return res.status(403).json({ message: 'You are not allowed to update this account' });
             }
 
+            // check account has been deleted or not
+            if (account.deleted_at) {
+                return res.status(403).json({ message: 'Your account has been deleted, please recover it first' });
+            }
+
             // validate
             const data = await Validation.validate(AccountValidation.UPDATE, req.body);
 

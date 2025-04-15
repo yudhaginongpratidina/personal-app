@@ -16,7 +16,7 @@ describe("AccountController", () => {
 
     let token;
 
-    describe("register", () => {
+    describe("test authentication", () => {
         it("should return a 201 status code when user is registered successfully", async () => {
             const response = await request(api).post('/auth/register').send({
                 full_name: "user test",
@@ -63,7 +63,7 @@ describe("AccountController", () => {
         })
     })
 
-    describe("find account test", () => {
+    describe("test find account", () => {
         it("should return a 404 status code when account not found", async () => {
             const response = await request(api).get('/account/user_test1');
             expect(response.status).toBe(404);
@@ -77,7 +77,7 @@ describe("AccountController", () => {
         })
     });
 
-    describe("update account test", () => {
+    describe("test update account", () => {
 
         it("should return a 403 status code when update account but not account owner", async () => {
             const response = await request(api).patch('/account/user_test_1')
@@ -140,7 +140,7 @@ describe("AccountController", () => {
         })
     });
 
-    describe("delete account test", () => {
+    describe("test delete account", () => {
         it("should return a 403 status code when delete account but not account owner", async () => {
             const response = await request(api).delete('/account/user_test_1')
                 .set("Authorization", `Bearer ${token}`);
@@ -201,7 +201,7 @@ describe("AccountController", () => {
         })
     })
 
-    describe("restore account test", () => {
+    describe("test restore account", () => {
         it("should return a 200 status code when restore account", async () => {
             const response = await request(api).patch('/account/restore').send({
                 email: "user@test.com",
@@ -221,6 +221,43 @@ describe("AccountController", () => {
             expect(response.body.message).toBe("user logged in successfully");
             expect(response.body.data.token).toBeDefined();
         })
+    })
+
+    describe("test update account but account has been deleted", () => {
+        it("should return a 200 status code if user login with email", async () => {
+            const response = await request(api).post('/auth/login').send({
+                type: "login_with_email",
+                email: "user@test.com",
+                password: "user@update.com"
+            });
+            expect(response.status).toBe(200);
+            expect(response.body.message).toBe("user logged in successfully");
+            expect(response.body.data.token).toBeDefined();
+
+            token = response.body.data.token
+        })
+
+        it("should return a 200 status code when delete account", async () => {
+            const response = await request(api).delete('/account/user_test')
+                .set("Authorization", `Bearer ${token}`)
+                .send({
+                    confirm_delete: "DELETE ACCOUNT"
+                });
+            expect(response.status).toBe(200);
+            expect(response.body.message).toBe("account deleted");
+        })
+
+        it("should return a 403 status code when user update account but account has been deleted", async () => {
+            const response = await request(api).patch('/account/user_test')
+                .set("Authorization", `Bearer ${token}`)
+                .send({
+                    type: "update_full_name",
+                    full_name: "user update"
+                });
+            expect(response.status).toBe(403);
+            expect(response.body.message).toBe("Your account has been deleted, please recover it first");
+        })
+
     })
 
 });
