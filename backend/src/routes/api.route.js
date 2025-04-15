@@ -37,6 +37,8 @@ api.patch("/account/:username", VerifyTokenMiddleware, AccountController.update)
 api.delete("/account/:username", VerifyTokenMiddleware, AccountController.soft_delete);
 
 api.get("/users", UsersController.index);
+api.get("/users/:id", UsersController.show);
+api.patch("/users/:id", UsersController.update);
 
 // --------------------------------------------------------------------------------
 // export default

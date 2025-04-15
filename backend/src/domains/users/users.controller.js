@@ -1,5 +1,7 @@
 import UsersService from "./users.service.js";
 import FormatDate from "../../utils/FormatDate.js";
+import Validation from "../../utils/Validation.js";
+import UsersValidation from "./users.validation.js";
 
 export default class UsersController {
     static async index(req, res, next) {
@@ -56,7 +58,22 @@ export default class UsersController {
     static async show(req, res, next) {
         try {
             const { id } = req.params;
-            res.send(`Users show ${id}`);
+            const response = await UsersService.find_by_id(id);
+            res.status(200).json({
+                message: "user found",
+                data: {
+                    id: response.id,
+                    full_name: response.full_name,
+                    username: response.username,
+                    email: response.email,
+                    role: response.role,
+                    image: response.image,
+                    bio: response.bio,
+                    created_at: FormatDate(response.created_at),
+                    updated_at: FormatDate(response.updated_at),
+                    deleted_at: FormatDate(response.deleted_at)
+                }
+            })
         } catch (e) {
             next(e);
         }
@@ -74,7 +91,16 @@ export default class UsersController {
     static async update(req, res, next) {
         try {
             const { id } = req.params;
-            res.send(`Users updated ${id}`);
+            const data = await Validation.validate(UsersValidation.UPDATE, req.body);
+
+            if (data.type === "update_role") {
+                const response = await UsersService.update_role(id, data.role);
+                res.status(200).json({
+                    message: "user role updated",
+                    data: response
+                });
+            }
+
         } catch (e) {
             next(e);
         }

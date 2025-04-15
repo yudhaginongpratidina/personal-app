@@ -20,6 +20,15 @@ describe("UsersController", () => {
         await prismaClient.user.createMany({
             data: users
         });
+        await prismaClient.user.create({
+            data: {
+                full_name: "admin",
+                username: "admin",
+                email: "admin@test.com",
+                password: bcrypt.hashSync('admin@test.com', 10),
+                role: "admin"
+            }
+        });
     });
 
     afterAll(async () => {
@@ -43,4 +52,35 @@ describe("UsersController", () => {
             expect(response.body.data.users_by_role.admin).toBeDefined();
         })
     })
+
+    describe("test get user by id", () => {
+        it("should return a 200 status code when get user by id successfully", async () => {
+            const users = await request(api).get('/users');
+            const response = await request(api).get(`/users/${users.body.data.users_by_role.user[0].id}`);
+            expect(response.status).toBe(200);
+            expect(response.body.message).toBe("user found");
+            expect(response.body.data.id).toBeDefined();
+            expect(response.body.data.full_name).toBeDefined();
+            expect(response.body.data.username).toBeDefined();
+            expect(response.body.data.role).toBeDefined();
+            expect(response.body.data.image).toBeDefined();
+            expect(response.body.data.created_at).toBeDefined();
+            expect(response.body.data.updated_at).toBeDefined();
+            expect(response.body.data.deleted_at).toBeDefined();
+        })
+    })
+
+    describe("test update role user by id", () => {
+        it("should return a 200 status code when update role user by id successfully", async () => {
+            const users = await request(api).get('/users');
+            const user_by_id = await request(api).get(`/users/${users.body.data.users_by_role.user[0].id}`);
+            const response = await request(api).patch(`/users/${user_by_id.body.data.id}`).send({
+                type: "update_role",
+                role: "admin"
+            })
+            expect(response.status).toBe(200);
+            expect(response.body.message).toBe("user role updated");
+        })
+    })
+
 });
