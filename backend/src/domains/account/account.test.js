@@ -79,7 +79,7 @@ describe("AccountController", () => {
 
     describe("update account test", () => {
 
-        it("should return a 403 status code when update account but not account owner", async () => { 
+        it("should return a 403 status code when update account but not account owner", async () => {
             const response = await request(api).patch('/account/user_test_1')
                 .set("Authorization", `Bearer ${token}`)
                 .send({
@@ -90,7 +90,7 @@ describe("AccountController", () => {
             expect(response.body.message).toBe("You are not allowed to update this account");
         })
 
-        it("should return a 200 status code when update account - full name", async () => { 
+        it("should return a 200 status code when update account - full name", async () => {
             const response = await request(api).patch('/account/user_test')
                 .set("Authorization", `Bearer ${token}`)
                 .send({
@@ -156,6 +156,48 @@ describe("AccountController", () => {
                 });
             expect(response.status).toBe(200);
             expect(response.body.message).toBe("account deleted");
+        })
+
+        it("should return a 403 status code when user login but account owner is deleted (login with username)", async () => {
+            const response = await request(api).post('/auth/login').send({
+                type: "login_with_username",
+                username: "user_test",
+                password: "user@test.com"
+            });
+            expect(response.status).toBe(403);
+            expect(response.body.message).toBe("Account deleted. Would you like to restore it?");
+        })
+
+        it("should return a 403 status code when user login but account owner is deleted (login with email)", async () => {
+            const response = await request(api).post('/auth/login').send({
+                type: "login_with_email",
+                email: "user@test.com",
+                password: "user@test.com"
+            });
+            expect(response.status).toBe(403);
+            expect(response.body.message).toBe("Account deleted. Would you like to restore it?");
+        })
+
+        it("should return a 200 status code if user login with email", async () => {
+            const response = await request(api).post('/auth/login').send({
+                type: "login_with_email",
+                email: "user1@test.com",
+                password: "user1@test.com"
+            });
+            expect(response.status).toBe(200);
+            expect(response.body.message).toBe("user logged in successfully");
+            expect(response.body.data.token).toBeDefined();
+        })
+
+        it("should return a 200 status code if user login with username", async () => {
+            const response = await request(api).post('/auth/login').send({
+                type: "login_with_username",
+                username: "user_test_1",
+                password: "user1@test.com"
+            });
+            expect(response.status).toBe(200);
+            expect(response.body.message).toBe("user logged in successfully");
+            expect(response.body.data.token).toBeDefined();
         })
     })
 

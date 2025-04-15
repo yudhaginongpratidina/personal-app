@@ -27,6 +27,9 @@ export default class AuthenticationService {
             throw new ResponseError(404, "user not found");
         }
 
+        if (user.deleted_at) {
+            throw new ResponseError(403, "Account deleted. Would you like to restore it?");
+        }
         const passwordMatch = await bcrypt.compare(data.password, user.password);
         if (!passwordMatch) {
             throw new ResponseError(401, "wrong password");
@@ -39,6 +42,10 @@ export default class AuthenticationService {
         const user = await AuthenticationRepository.find_username(data.username);
         if (!user) {
             throw new ResponseError(404, "user not found");
+        }
+
+        if (user.deleted_at) {
+            throw new ResponseError(403, "Account deleted. Would you like to restore it?");
         }
 
         const passwordMatch = await bcrypt.compare(data.password, user.password);
