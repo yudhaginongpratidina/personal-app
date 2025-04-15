@@ -30,10 +30,11 @@ export default class AuthenticationController {
             const response = await loginMethodMap[data.type](data);
 
             const id = response.id;
+            const username = response.username;
             const role = response.role;
 
-            const access_token = jwt.sign({ id, role }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN });
-            const refresh_token = jwt.sign({ id, role }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN });
+            const access_token = jwt.sign({ id, role, username }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN });
+            const refresh_token = jwt.sign({ id, role, username }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN });
 
             res.cookie("refresh_token", refresh_token, { httpOnly: true, secure: true, sameSite: "None", maxAge: 24 * 60 * 60 * 1000, partitioned: true });
 
@@ -57,8 +58,9 @@ export default class AuthenticationController {
             if (!decoded) return res.sendStatus(403);
 
             const id = decoded.id;
+            const username = decoded.username;
             const role = decoded.role;
-            const access_token = jwt.sign({ id, role }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN });
+            const access_token = jwt.sign({ id, role, username }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN });
 
             res.status(200).json({ message: "Token refreshed successfully", data: { token: access_token } });
         } catch (error) {

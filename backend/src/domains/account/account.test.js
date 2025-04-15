@@ -33,6 +33,22 @@ describe("AccountController", () => {
             expect(response.body.data.role).toBe("user");
         })
 
+        it("should return a 201 status code when other user is registered successfully", async () => {
+            const response = await request(api).post('/auth/register').send({
+                full_name: "user test 1",
+                username: "user_test_1",
+                email: "user1@test.com",
+                password: "user1@test.com",
+                confirm_password: "user1@test.com"
+            });
+            expect(response.status).toBe(201);
+            expect(response.body.message).toBe("user registered successfully");
+            expect(response.body.data.full_name).toBe("user test 1");
+            expect(response.body.data.username).toBe("user_test_1");
+            expect(response.body.data.email).toBe("user1@test.com");
+            expect(response.body.data.role).toBe("user");
+        })
+
         it("should return a 200 status code when user is login successfully", async () => {
             const response = await request(api).post('/auth/login').send({
                 type: "login_with_username",
@@ -62,6 +78,18 @@ describe("AccountController", () => {
     });
 
     describe("update account test", () => {
+
+        it("should return a 403 status code when update account but not account owner", async () => { 
+            const response = await request(api).patch('/account/user_test_1')
+                .set("Authorization", `Bearer ${token}`)
+                .send({
+                    type: "update_full_name",
+                    full_name: "user update"
+                });
+            expect(response.status).toBe(403);
+            expect(response.body.message).toBe("You are not allowed to update this account");
+        })
+
         it("should return a 200 status code when update account - full name", async () => { 
             const response = await request(api).patch('/account/user_test')
                 .set("Authorization", `Bearer ${token}`)
