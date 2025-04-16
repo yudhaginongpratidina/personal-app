@@ -70,6 +70,7 @@ export default function MasterNavbar({ onToggleSidebar }: NavbarProps) {
                                         name="profile"
                                         type="button"
                                         icon={<FaUser className="w-4 h-4" />}
+                                        onClick={() => { window.location.href = "/profile" }}
                                         className="justify-start py-2 px-1.5 border-transparent hover:border-gray-100 hover:bg-gray-100"
                                     />
                                     <Button

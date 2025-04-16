@@ -18,8 +18,10 @@ export const Navbar = ({ fixed, children }: { fixed: boolean, children: React.Re
 
 export const NavbarContainer = ({ children }: { children: React.ReactNode }) => {
     return (
-        <div className="w-full h-14 px-4 md:px-16 flex justify-between items-center shadow-sm drop-shadow-sm border-b border-gray-200 bg-white">
-            {children}
+        <div className="w-full shadow-sm drop-shadow-sm border-b border-gray-200 bg-white">
+            <div className="w-full max-w-4xl mx-auto h-14 px-4 md:px-14 lg:px-0 flex justify-between items-center">
+                {children}
+            </div>
         </div>
     )
 }

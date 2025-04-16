@@ -4,7 +4,7 @@ import { JSX } from "react"
 
 export const Sidebar = ({children} : {children: React.ReactNode}) => {
     return (
-        <aside className="w-full max-w-xs h-screen fixed top-0 left-0 z-10 shadow-sm drop-shadow-sm flex flex-col bg-white">
+        <aside className="w-full max-w-sm h-screen fixed top-0 left-0 z-20 shadow-sm drop-shadow-sm flex flex-col bg-white">
             {children}
         </aside>
     )
