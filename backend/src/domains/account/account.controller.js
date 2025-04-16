@@ -61,41 +61,14 @@ export default class AccountController {
 
     static async update(req, res, next) {
         try {
-
-            // request param
             const { username } = req.params;
-
-            // get token
-            const authHeader = req.headers['authorization'];
-            const token = authHeader?.split(' ')[1];
-
-            // decode token
-            let decoded;
-            decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-
-            // check account, if account id match with decoded id
-            const account = await AccountService.find_by_username(username);
-            if (decoded.id !== account.id) {
-                return res.status(403).json({ message: 'You are not allowed to update this account' });
-            }
-
-            // check account has been deleted or not
-            if (account.deleted_at) {
-                return res.status(403).json({ message: 'Your account has been deleted, please recover it first' });
-            }
-
-            // validate
             const data = await Validation.validate(AccountValidation.UPDATE, req.body);
 
-            // update
             const response = await AccountService.update_account(username, data.type, data);
-
-            // return response
             res.status(200).json({
                 message: 'account updated',
                 data: response,
             });
-
         } catch (e) {
             next(e);
         }
@@ -103,24 +76,7 @@ export default class AccountController {
 
     static async soft_delete(req, res, next) {
         try {
-            // request param
             const { username } = req.params;
-
-            // get token
-            const authHeader = req.headers['authorization'];
-            const token = authHeader?.split(' ')[1];
-
-            // decode token
-            let decoded;
-            decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-
-            // check account, if account id match with decoded id
-            const account = await AccountService.find_by_username(username);
-            if (decoded.id !== account.id) {
-                return res.status(403).json({ message: 'You are not allowed to delete this account' });
-            }
-
-            // validate
             const data = await Validation.validate(AccountValidation.SOFT_DELETE, req.body);
 
             if (data.confirm_delete === "DELETE ACCOUNT") {

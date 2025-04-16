@@ -87,7 +87,7 @@ describe("AccountController", () => {
                     full_name: "user update"
                 });
             expect(response.status).toBe(403);
-            expect(response.body.message).toBe("You are not allowed to update this account");
+            expect(response.body.message).toBe("Nice try, but you can only perform this operation on your own account");
         })
 
         it("should return a 200 status code when update account - full name", async () => {
@@ -145,7 +145,7 @@ describe("AccountController", () => {
             const response = await request(api).delete('/account/user_test_1')
                 .set("Authorization", `Bearer ${token}`);
             expect(response.status).toBe(403);
-            expect(response.body.message).toBe("You are not allowed to delete this account");
+            expect(response.body.message).toBe("Nice try, but you can only perform this operation on your own account");
         })
 
         it("should return a 200 status code when delete account", async () => {
