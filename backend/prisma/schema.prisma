@@ -1,0 +1,104 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "mysql"
+    url      = env("DATABASE_URL")
+}
+
+enum Gender {
+    MALE
+    FEMALE
+    NON_BINARY
+    PREFER_NOT_TO_SAY
+    CUSTOM
+}
+
+enum GreetingPreference {
+    MALE
+    FEMALE
+    NEUTRAL
+    CUSTOM
+}
+
+enum AccountStatus {
+    ACTIVE
+    INACTIVE
+    SUSPENDED
+    PENDING
+}
+
+enum AddressType {
+    HOME
+    WORK
+    OTHER
+}
+
+model User {
+    id                  String             @id @default(cuid())
+    // Informasi Dasar
+    full_name           String
+    birth_date          DateTime
+    gender              Gender
+    custom_gender       String?
+    greeting_preference GreetingPreference
+    custom_greeting     String?
+    profile_image_url   String?
+
+    // Informasi Kontak
+    email          String  @unique
+    recovery_email String?
+    password_hash  String
+    phone_number   String? @unique
+    recovery_phone String?
+
+    // Status & Verifikasi
+    is_email_verified Boolean       @default(false)
+    is_phone_verified Boolean       @default(false)
+    status            AccountStatus @default(ACTIVE)
+
+    // Timestamps
+    created_at          DateTime  @default(now())
+    updated_at          DateTime  @updatedAt
+    last_login_at       DateTime?
+    password_changed_at DateTime?
+
+    // Relasi
+    Addresses              Address[]
+    EmailVerificationToken EmailVerificationToken[]
+    PhoneVerification      PhoneVerification[]
+}
+
+model Address {
+    id          String      @id @default(cuid())
+    user_id     String
+    user        User        @relation(fields: [user_id], references: [id], onDelete: Cascade)
+    type        AddressType
+    address     String
+    city        String
+    province    String
+    postal_code String
+    country     String
+    is_primary  Boolean     @default(false)
+    created_at  DateTime    @default(now())
+    updated_at  DateTime    @updatedAt
+}
+
+model EmailVerificationToken {
+    id        String   @id @default(cuid())
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId    String
+    token     String   @unique
+    expiresAt DateTime
+    createdAt DateTime @default(now())
+}
+
+model PhoneVerification {
+    id        String   @id @default(cuid())
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId    String
+    otp       String
+    expiresAt DateTime
+    createdAt DateTime @default(now())
+}
