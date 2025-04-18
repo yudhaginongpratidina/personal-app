@@ -7,8 +7,6 @@ const VerifyTokenMiddleware = (req, res, next) => {
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
         if (err) return res.sendStatus(403);
         req.id = decoded.id;
-        req.username = decoded.username;
-        req.role = decoded.role;
         next();
     })
 }
