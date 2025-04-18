@@ -22,22 +22,22 @@ describe("AuthenticationController", () => {
 
             expect(response.body.data[0].path).toBe("full_name");
             expect(response.body.data[0].message).toBe("Required");
-            
+
             expect(response.body.data[1].path).toBe("birth_date");
             expect(response.body.data[1].message).toBe("Required");
-            
+
             expect(response.body.data[2].path).toBe("gender");
             expect(response.body.data[2].message).toBe("Gender is required");
-            
+
             expect(response.body.data[3].path).toBe("greeting_prefrence");
             expect(response.body.data[3].message).toBe("Greeting prefrence is required");
-            
+
             expect(response.body.data[4].path).toBe("email");
             expect(response.body.data[4].message).toBe("Required");
-            
+
             expect(response.body.data[5].path).toBe("phone_number");
             expect(response.body.data[5].message).toBe("Required");
-            
+
             expect(response.body.data[6].path).toBe("password");
             expect(response.body.data[6].message).toBe("Required");
 
@@ -179,5 +179,68 @@ describe("AuthenticationController", () => {
             expect(response.status).toBe(409);
             expect(response.body.message).toBe("Phone number is already exist");
         });
+    });
+
+    describe("test login", () => {
+
+        it("scenario-01: should return a 400 status code when fields login is empty", async () => {
+            const response = await request(api).post('/auth/login').send({})
+            expect(response.status).toBe(400);
+            expect(response.body.data[0].path).toBe("type");
+            expect(response.body.data[0].message).toBe("Type must be login_with_email or login_with_phone_number");
+            expect(response.body.data[1].path).toBe("password");
+            expect(response.body.data[1].message).toBe("Required");
+        });
+
+        it("scenario-02: should return a 404 status code when login but email not found (login with email)", async () => {
+            const response = await request(api).post('/auth/login').send({
+                type: "login_with_email",
+                email: "user_test@gmail.com",
+                password: "user_test@gmail.com"
+            })
+            expect(response.status).toBe(404);
+            expect(response.body.message).toBe("User not found");
+        });
+
+        it("scenario-03: should return a 404 status code when login but phone number not found (login with phone number)", async () => {
+            const response = await request(api).post('/auth/login').send({
+                type: "login_with_phone_number",
+                phone_number: "0000",
+                password: "user_test@gmail.com"
+            })
+            expect(response.status).toBe(404);
+            expect(response.body.message).toBe("User not found");
+        });
+
+        it("scenario-04: should return a 401 status code when login but invalid password", async () => {
+            const response = await request(api).post('/auth/login').send({
+                type: "login_with_email",
+                email: "user_one@gmail.com",
+                password: "user_oe@gmail.com"
+            })
+            expect(response.status).toBe(401);
+            expect(response.body.message).toBe("Invalid password");
+        });
+
+        it("scenario-05: should return a 200 status code when login success (login with email)", async () => {
+            const response = await request(api).post('/auth/login').send({
+                type: "login_with_email",
+                email: "user_one@gmail.com",
+                password: "user_one@gmail.com"
+            })
+            expect(response.status).toBe(200);
+            expect(response.body.message).toBe("success");
+        });
+
+        it("scenario-06: should return a 200 status code when login success (login with phone number)", async () => {
+            const response = await request(api).post('/auth/login').send({
+                type: "login_with_phone_number",
+                phone_number: "001",
+                password: "user_one@gmail.com"
+            })
+            expect(response.status).toBe(200);
+            expect(response.body.message).toBe("success");
+        });
+
     });
 });

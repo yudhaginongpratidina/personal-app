@@ -16,4 +16,23 @@ export default class AuthenticationService {
         delete data.confirm_password;
         return await AuthenticationRepository.create(data);
     }
+
+    static async login(type, data) {
+        const field = type === "login_with_email" ? "user_email" :
+                      type === "login_with_phone_number" ? "user_phone_number" : null;
+        const identifier = data.email || data.phone_number;
+    
+        if (!field || !identifier) { throw new ResponseError(400, "Invalid login type or missing credentials");}
+    
+        const user = await AuthenticationRepository.find(field, identifier);
+        if (!user) throw new ResponseError(404, "User not found");
+    
+        const isPasswordValid = await bcrypt.compare(data.password, user.password_hash);
+        if (!isPasswordValid) throw new ResponseError(401, "Invalid password");
+    
+        await AuthenticationRepository.update_last_login(user.id);
+        delete user.password_hash;
+    
+        return user;
+    }
 }

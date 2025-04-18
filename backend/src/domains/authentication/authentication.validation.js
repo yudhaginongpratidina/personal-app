@@ -74,4 +74,38 @@ export default class AuthenticationValidation {
             });
         }
     });
+
+    static LOGIN = z
+        .object({
+            type: z.enum(['login_with_email', 'login_with_phone_number'], {
+                errorMap: () => ({ message: 'Type must be login_with_email or login_with_phone_number' }),
+            }),
+            email: z
+                .string()
+                .email('Email must be valid')
+                .optional(),
+            phone_number: z
+                .string()
+                .optional(),
+            password: z
+                .string()
+                .min(6, 'Password must be at least 6 characters long')
+                .max(20, 'Password must be at most 20 characters long'),
+        })
+        .superRefine((data, ctx) => {
+            if (data.type === 'login_with_email' && !data.email) {
+                ctx.addIssue({
+                    path: ['email'],
+                    message: 'Email is required when using login_with_email',
+                    code: z.ZodIssueCode.custom,
+                });
+            }
+            if (data.type === 'login_with_phone_number' && !data.phone_number) {
+                ctx.addIssue({
+                    path: ['phone_number'],
+                    message: 'Phone number is required when using login_with_username',
+                    code: z.ZodIssueCode.custom,
+                });
+            }
+        });
 }

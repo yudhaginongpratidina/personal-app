@@ -34,4 +34,11 @@ export default class AuthenticationRepository {
         });
     }
 
+    static async update_last_login(user_id) {
+        return await prismaClient.user.update({
+            where: { id: user_id },
+            data: { last_login_at: new Date() }
+        });
+    }
+
 }
