@@ -4,6 +4,8 @@
 import cors from 'cors';
 import express from "express";
 import cookieParser from 'cookie-parser';
+import swaggerUi from 'swagger-ui-express';
+import swaggerSpec from './swagger.js';
 
 // --------------------------------------------------------------------------------
 // dependencies - routes
@@ -33,6 +35,7 @@ app.use(express.urlencoded({ extended: true }));
 // routes
 // --------------------------------------------------------------------------------
 app.use('/api', api);
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // --------------------------------------------------------------------------------
 // custom middleware
