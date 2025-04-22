@@ -8,7 +8,7 @@ import "./globals.css";
 // -----------------------------------------------------------
 // import layout
 // -----------------------------------------------------------
-import Master from "@/components/Master";
+import AppLayout from "@/components/AppLayout";
 
 // -----------------------------------------------------------
 // configure metadata
@@ -35,9 +35,9 @@ export default function RootLayout({ children, }: Readonly<{ children: React.Rea
     return (
         <html lang="en" data-theme="dark">
             <body className={`${poppins.variable} antialiased select-none`}>
-                <Master>
+                <AppLayout>
                     {children}
-                </Master>
+                </AppLayout>
             </body>
         </html>
     );
