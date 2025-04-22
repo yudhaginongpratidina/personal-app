@@ -33,10 +33,10 @@ const poppins = Poppins({
 // -----------------------------------------------------------
 export default function RootLayout({ children, }: Readonly<{ children: React.ReactNode; }>) {
     return (
-        <html lang="en">
+        <html lang="en" data-theme="dark">
             <body className={`${poppins.variable} antialiased select-none`}>
                 <Master>
-                    { children }
+                    {children}
                 </Master>
             </body>
         </html>
