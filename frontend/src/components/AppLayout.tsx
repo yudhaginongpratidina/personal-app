@@ -1,13 +1,34 @@
 "use client"
+
+
+// --------------------------------------------------------------------------------------------
+// DEPENDENCIES
+// --------------------------------------------------------------------------------------------
 import { useState, useEffect, useCallback } from "react";
+
+
+// --------------------------------------------------------------------------------------------
+// UI COMPONENT
+// --------------------------------------------------------------------------------------------
 import { Navbar, NavContainer, NavItems, NavLink } from "@/components/UI/Navbar";
 import { Brand, BrandLogo, BrandName } from "@/components/UI/Brand";
 import IconButton from "@/components/UI/IconButton";
 
+
+// --------------------------------------------------------------------------------------------
+// APP LAYOUT
+// --------------------------------------------------------------------------------------------
 export default function AppLayout({ children, }: Readonly<{ children: React.ReactNode; }>) {
+    // --------------------------------------------------------------------------------------------
+    // STATE
+    // --------------------------------------------------------------------------------------------
     const [navIsOpen, setNavIsOpen] = useState(false);
     const [darkMode, setDarkMode] = useState(false);
 
+
+    // --------------------------------------------------------------------------------------------
+    // FUNCTION FOR SWITCH DARK MODE OR LIGHT MODE
+    // --------------------------------------------------------------------------------------------
     const toggleDarkMode = useCallback(() => {
         setDarkMode((prev) => {
             const theme = prev ? "light" : "dark";
@@ -17,13 +38,16 @@ export default function AppLayout({ children, }: Readonly<{ children: React.Reac
         });
     }, []);
 
+
+    // --------------------------------------------------------------------------------------------
+    // USE EFFECT FOR LOAD THEME
+    // --------------------------------------------------------------------------------------------
     useEffect(() => {
         let isMounted = true;
 
         const initializeTheme = () => {
             const savedTheme = localStorage.getItem("theme");
             const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-
             const theme = savedTheme || (prefersDark ? "dark" : "light");
 
             if (isMounted) {
@@ -33,33 +57,40 @@ export default function AppLayout({ children, }: Readonly<{ children: React.Reac
         };
 
         initializeTheme();
-
-        return () => {
-            isMounted = false;
-        };
+        return () => { isMounted = false; };
     }, []);
 
-    const NAV_LINKS = [
-        { href: "/", name: "Home" },
-        { href: "/", name: "Portfolio" },
-        { href: "/", name: "Article" },
+
+    // --------------------------------------------------------------------------------------------
+    // LIST LINK
+    // --------------------------------------------------------------------------------------------
+    const NAV_LINKS_FOR_ROOT = [
+        { href: "/", name: "home" },
+        { href: "/", name: "portfolio" },
+        { href: "/", name: "article" },
     ];
 
+
+    // --------------------------------------------------------------------------------------------
+    // STYLE
+    // --------------------------------------------------------------------------------------------
     const STYLE = {
-        NAV_CONTAINER_DESKTOP: "h-14 bg-white dark:bg-gray-900",
-        NAV_CONTAINER_MOBILE: "py-4 md:hidden bg-white dark:bg-gray-800",
-        NAV_BRAND: {
-            LOGO: "bg-gray-700 dark:bg-gray-200",
-            NAME: "text-gray-700 dark:text-gray-200"
+        NAV_CONTAINER: {
+            DESKTOP: "h-14 bg-white dark:bg-gray-800",
+            MOBILE: "py-4 md:hidden bg-white dark:bg-gray-800"
         },
-        NAV_LINK: "text-gray-700 dark:text-gray-200",
-        NAV_BUTTON: "border-gray-200 text-gray-700 dark:border-gray-700 dark:text-gray-200"
-    }
+        NAV_BRAND: {
+            LOGO: "bg-black dark:bg-white",
+            NAME: "text-black dark:text-white"
+        },
+        NAV_LINK: "text-black dark:text-white",
+        NAV_BUTTON: "text-black dark:text-white border-black dark:border-white"
+    };
 
     return (
         <>
             <Navbar position="fixed-top">
-                <NavContainer className={STYLE.NAV_CONTAINER_DESKTOP}>
+                <NavContainer className={STYLE.NAV_CONTAINER.DESKTOP}>
                     <NavItems direction="row">
                         <Brand>
                             <BrandLogo href="/" className={STYLE.NAV_BRAND.LOGO} />
@@ -67,7 +98,7 @@ export default function AppLayout({ children, }: Readonly<{ children: React.Reac
                         </Brand>
                     </NavItems>
                     <NavItems direction="row" className="hidden md:flex">
-                        {NAV_LINKS.map(({ href, name }) => (
+                        {NAV_LINKS_FOR_ROOT.map(({ href, name }) => (
                             <NavLink key={name} href={href} name={name} className={STYLE.NAV_LINK} />
                         ))}
                     </NavItems>
@@ -85,9 +116,9 @@ export default function AppLayout({ children, }: Readonly<{ children: React.Reac
                     </NavItems>
                 </NavContainer>
                 {navIsOpen && (
-                    <NavContainer className={STYLE.NAV_CONTAINER_MOBILE}>
+                    <NavContainer className={STYLE.NAV_CONTAINER.MOBILE}>
                         <NavItems direction="column">
-                            {NAV_LINKS.map(({ href, name }) => (
+                            {NAV_LINKS_FOR_ROOT.map(({ href, name }) => (
                                 <NavLink key={name} href={href} name={name} className={STYLE.NAV_LINK} />
                             ))}
                         </NavItems>
