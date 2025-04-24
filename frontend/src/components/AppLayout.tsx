@@ -65,9 +65,9 @@ export default function AppLayout({ children, }: Readonly<{ children: React.Reac
     // LIST LINK
     // --------------------------------------------------------------------------------------------
     const NAV_LINKS_FOR_ROOT = [
-        { href: "/", name: "home" },
-        { href: "/", name: "portfolio" },
-        { href: "/", name: "article" },
+        { href: "/home", name: "home" },
+        { href: "/portfolio", name: "portfolio" },
+        { href: "/article", name: "article" },
     ];
 
 
