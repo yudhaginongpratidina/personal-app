@@ -23,21 +23,11 @@ export default class AuthenticationRepository {
                 full_name: data.full_name,
                 birth_date: data.birth_date,
                 gender: data.gender,
-                custome_gender: data.custome_gender,
-                greeting_preference: data.greeting_prefrence,
-                custom_greeting_prefrence: data.custom_greeting_prefrence,
                 email: data.email,
                 phone_number: data.phone_number,
                 password_hash: data.password,
                 confirm_password: data.confirm_password
             }
-        });
-    }
-
-    static async update_last_login(user_id) {
-        return await prismaClient.user.update({
-            where: { id: user_id },
-            data: { last_login_at: new Date() }
         });
     }
 

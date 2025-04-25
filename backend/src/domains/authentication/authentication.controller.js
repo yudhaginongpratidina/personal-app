@@ -9,38 +9,16 @@ export default class AuthenticationController {
             const data = await Validation.validate(AuthenticationValidation.REGISTER, req.body);
             const response = await AuthenticationService.register(data);
             res.status(201).json({
-                message: "success",
+                message: "create user successfully",
                 data: {
                     id: response.id,
                     full_name: response.full_name,
                     birth_date: FormatDate(response.birth_date),
                     gender: response.gender,
-                    greeting_preference: response.greeting_preference,
                     profile_image_url: response.profile_image_url,
                     email: response.email,
-                    phone_number: response.phone_number
-                }
-            })
-        } catch (e) {
-            next(e);
-        }
-    }
-
-    static async login(req, res, next) {
-        try {
-            const data = await Validation.validate(AuthenticationValidation.LOGIN, req.body);
-            const response = await AuthenticationService.login(data.type, data);
-            res.status(200).json({
-                message: "success",
-                data: {
-                    id: response.id,
-                    full_name: response.full_name,
-                    birth_date: FormatDate(response.birth_date),
-                    gender: response.gender,
-                    greeting_preference: response.greeting_preference,
-                    profile_image_url: response.profile_image_url,
-                    email: response.email,
-                    phone_number: response.phone_number
+                    phone_number: response.phone_number,
+                    created_at: FormatDate(response.created_at)
                 }
             })
         } catch (e) {
