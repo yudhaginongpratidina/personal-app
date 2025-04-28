@@ -1,90 +1,56 @@
-// --------------------------------------------------------------------------------------------
-// DEPENDENCIES
-// --------------------------------------------------------------------------------------------
+"use client"
+import { usePathname } from "next/navigation"
 import Link from "next/link"
-import cn from "@/utils/cn"
 
-
-// --------------------------------------------------------------------------------------------
-// TYPE DECLARATION
-// --------------------------------------------------------------------------------------------
-type NavbarProps = {
-    position: "fixed-top" | "fixed-bottom" | "sticky-top" | "sticky-bottom" | "normal",
-    children: React.ReactNode
-}
-
-type NavContainerProps = {
-    children: React.ReactNode
-    className?: string
-}
-
-type NavbarItemsProps = {
-    direction: "row" | "column",
-    children: React.ReactNode,
-    className?: string
-}
-
-type NavLinkProps = {
-    href: string,
-    name: string,
-    className?: string
-}
-
-// --------------------------------------------------------------------------------------------
-// UI NAVBAR
-// --------------------------------------------------------------------------------------------
-export const Navbar = ({ position, children }: Readonly<NavbarProps>) => {
+export const Navbar = ({ children }: { children: React.ReactNode }) => {
     return (
-        <nav className={cn(
-            "w-full flex flex-col gap-0.5",
-            {
-                "fixed top-0 z-10": position === "fixed-top",
-                "fixed bottom-0 z-10": position === "fixed-bottom",
-                "sticky top-0 z-10": position === "sticky-top",
-                "sticky bottom-0 z-10": position === "sticky-bottom",
-                "relative": position === "normal",
-            }
-        )}>{children}</nav>
+        <nav className="w-full fixed top-0 z-10">
+            {children}
+        </nav>
     )
 }
 
-
-// --------------------------------------------------------------------------------------------
-// UI NAVBAR - CONTAINER
-// --------------------------------------------------------------------------------------------
-export const NavContainer = ({ children, className }: Readonly<NavContainerProps>) => {
+export const NavbarContainer = ({ children }: { children: React.ReactNode }) => {
     return (
-        <div className={cn("box-border w-full px-4 md:px-16 flex justify-between items-center shadow-sm drop-shadow-sm duration-200", className)}>
+        <div className="w-full flex flex-col gap-0.5">
             {children}
         </div>
     )
 }
 
-
-// --------------------------------------------------------------------------------------------
-// UI NAVBAR - ITEMS
-// --------------------------------------------------------------------------------------------
-export const NavItems = ({ direction, className, children }: Readonly<NavbarItemsProps>) => {
+export const NavbarDesktop = ({ children }: { children: React.ReactNode }) => {
     return (
-        <div className={cn(
-            "flex gap-2.5",
-            {
-                "flex-row": direction === "row",
-                "flex-col": direction === "column"
-            },
-            className
-        )}>{children}</div>
+        <div className="w-full h-14 px-4 md:px-16 flex justify-between items-center shadow bg-white">
+            {children}
+        </div>
     )
 }
 
-
-// --------------------------------------------------------------------------------------------
-// UI NAVBAR - LINK
-// --------------------------------------------------------------------------------------------
-export const NavLink = ({ href, name, className }: Readonly<NavLinkProps>) => {
+export const NavbarMobile = ({ children, isActive }: { children: React.ReactNode, isActive: boolean }) => {
     return (
-        <Link href={href || "/"} className={cn("font-semibold text-md capitalize md:hover:underline md:hover:underline-offset-8", className)}>
-            {name}
+        <>
+            {isActive && (
+                <div className="w-full h-fit py-4 px-4 md:px-16 flex md:hidden flex-col gap-4 shadow bg-white">
+                    {children}
+                </div>
+            )}
+        </>
+    )
+}
+
+export const NavItems = ({ children, className }: { children: React.ReactNode, className?: string }) => {
+    return (
+        <div className={`flex items-center gap-4 ${className}`}>
+            {children}
+        </div>
+    )
+}
+
+export const NavLink = ({ href, children }: { href: string, children: React.ReactNode }) => {
+    const pathname = usePathname()
+    return (
+        <Link href={href} className={`text-md font-medium capitalize ${pathname === href ? "underline underline-offset-4" : "hover:underline hover:underline-offset-4"}`}>
+            {children}
         </Link>
     )
 }

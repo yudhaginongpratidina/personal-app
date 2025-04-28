@@ -1,11 +1,13 @@
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
-    title: "Home",
+    title: "Register",
 }
 
 export default function HomeLayout({ children }: { children: React.ReactNode }) {
     return (
-        <>{children}</>
+        <main className="w-full min-h-screen px-4 md:px-16 flex justify-center items-center">
+            {children}
+        </main>
     )
 }
